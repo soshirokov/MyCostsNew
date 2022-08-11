@@ -1,26 +1,50 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from 'react'
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+} from "react-router-dom"
+import { onAuthStateChanged } from 'firebase/auth'
+import './App.css'
+import { auth } from './utils/firebase'
+import { PrivateRoute } from './Routes/PivateRoutes'
+import { Home } from './Routes/Home'
+import { Login } from './Routes/Login'
+import NewCalendar from './Components/Calendar'
+import '../node_modules/antd/dist/antd.css'
 
 function App() {
+  const [authed, setAuthed] = useState(false)
+  const [onAuth, setOnAuth] = useState(false)
+
+  useEffect(()=>{
+    setOnAuth(true);
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setAuthed(true);
+        setOnAuth(false);
+      } else {
+        setAuthed(false);
+        setOnAuth(false);
+      }
+    });
+
+    return unsubscribe;
+  }, [])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <><BrowserRouter>
+      {!onAuth &&
+        (<Routes>
+          <Route path="/" element={<PrivateRoute authed={authed} />}>
+            <Route path="" element={<Home />} />
+          </Route>
+          <Route path="/login" element={<Login authed={authed} />}>
+            <Route path="redirect/:redirect" element={<Login authed={authed} />} />
+          </Route>
+        </Routes>)}
+    </BrowserRouter><NewCalendar /></>
+  )
 }
 
-export default App;
+export default App

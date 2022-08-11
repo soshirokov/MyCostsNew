@@ -10,8 +10,7 @@ import { auth } from './utils/firebase'
 import { PrivateRoute } from './Routes/PivateRoutes'
 import { Home } from './Routes/Home'
 import { Login } from './Routes/Login'
-import NewCalendar from './Components/Calendar'
-import '../node_modules/antd/dist/antd.css'
+import 'antd/dist/antd.min.css'
 
 function App() {
   const [authed, setAuthed] = useState(false)
@@ -43,7 +42,7 @@ function App() {
             <Route path="redirect/:redirect" element={<Login authed={authed} />} />
           </Route>
         </Routes>)}
-    </BrowserRouter><NewCalendar /></>
+    </BrowserRouter></>
   )
 }
 

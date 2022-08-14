@@ -10,13 +10,13 @@ import { useDispatch } from 'react-redux';
 
 
 const NewCalendar: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
   const onPanelChange = (value: Moment, mode: CalendarMode) => {
     console.log(value.format('YYYY-MM-DD'), mode);
   };
 
   const onSelect = (date: Moment)=>{
-    let selectedDate:any = (date.format('YYYY-MM-DD'))
+    const selectedDate = date
     dispatch(getDate(selectedDate));
   }
 

@@ -1,13 +1,10 @@
-import React from 'react';
-import NewCalendar from '../../Components/Calendar';
-import { CategoriesSetting } from '../../Components/CategoriesSetting';
+import React from 'react'
+import NewCalendar from '../../Components/Calendar'
 
 const Home = () => {
     return (
         <div className='home'>
             <NewCalendar />
-
-            <CategoriesSetting />
         </div>
     );
 };

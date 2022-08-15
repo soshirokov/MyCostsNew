@@ -32,7 +32,12 @@ export const AddCosts = () => {
 
             onValue(costByDateRef(auth.currentUser.uid, currentDate.format('DD-MM-YYYY')), (snapshot) => { 
                 const costsFromServer: CostsServer = snapshot.val()
-                setCosts(prevState => ({...prevState, ...costsFromServer.details}))
+                if (costsFromServer) {
+                    setCosts(costsFromServer.details)
+                } else { 
+                    setCosts({})
+                }
+                
             })
         }
     }, [currentDate]);

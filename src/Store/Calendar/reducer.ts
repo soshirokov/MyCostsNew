@@ -1,11 +1,11 @@
-import { GET_DATE } from './actions'
+import { SET_DATE } from './actions'
 
 
 const initialState = ''
   
-export const calendarReducer:any = (state = initialState, action:any) => {
+export const calendarReducer: any = (state = initialState, action: { type: string, payload: string }) => {
     switch (action.type) {
-        case GET_DATE:
+        case SET_DATE:
         return action.payload
         default:
             return state

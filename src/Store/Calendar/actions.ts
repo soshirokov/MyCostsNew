@@ -1,7 +1,6 @@
-import type { Moment } from 'moment'
-export const GET_DATE = "GET_DATE"
+export const SET_DATE = "SET_DATE"
 
-export const getDate = (date: Moment) => ({
-    type: GET_DATE,
+export const setDate = (date: string) => ({
+    type: SET_DATE,
     payload: date
   });

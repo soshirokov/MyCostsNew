@@ -1,30 +1,30 @@
 import { Calendar } from 'antd';
-import type { CalendarMode } from 'antd/es/calendar/generateCalendar';
 import type { Moment } from 'moment';
-import React from 'react';
+import moment from 'moment'
 import "./style/index.css";
-import { getDate } from '../../Store/Calendar/actions';
+import { setDate } from '../../Store/Calendar/actions';
 import { useDispatch } from 'react-redux';
+import { useEffect } from 'react';
 
 
 
 
 const NewCalendar: React.FC = () => {
-  const dispatch = useDispatch();
-  const onPanelChange = (value: Moment, mode: CalendarMode) => {
-    console.log(value.format('YYYY-MM-DD'), mode);
-  };
+  const dispatch = useDispatch()
 
-  const onSelect = (date: Moment)=>{
-    let selectedDate:any = (date.format('YYYY-MM-DD'))
-    dispatch(getDate(selectedDate));
+  const onSelect = (date: Moment) => {
+    const selectedDate = date.format('DD-MM-YYYY')
+    dispatch(setDate(selectedDate))
   }
 
-
+  useEffect(() => { 
+    const defaultDate = moment(new Date()).format('DD-MM-YYYY')
+    dispatch(setDate(defaultDate))
+  }, [dispatch])
 
   return (
     <div className="site-calendar-demo-card">
-      <Calendar fullscreen={false} onPanelChange={onPanelChange} onSelect={onSelect}/> 
+      <Calendar fullscreen={false} onSelect={onSelect}/> 
     </div>
   ) 
   

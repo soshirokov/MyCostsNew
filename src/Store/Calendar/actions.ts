@@ -1,6 +1,6 @@
-export const GET_DATE = "GET_DATE";
+export const SET_DATE = "SET_DATE"
 
-export const getDate = (date:Date) => ({
-    type: GET_DATE,
+export const setDate = (date: string) => ({
+    type: SET_DATE,
     payload: date
   });

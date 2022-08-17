@@ -13,7 +13,6 @@ import 'antd/dist/antd.min.css'
 import { Layout, Typography } from 'antd'
 import styles from './App.module.scss'
 
-
 const { Header, Content } = Layout
 const { Title } = Typography
 
@@ -39,9 +38,7 @@ function App() {
   return (
     <>
       <Layout className={ styles.App }>
-        <Header className={ styles.App__Header }><Title level={2} className={ styles.App__SiteName }>MyCostsGB</Title>
- 
-        </Header>
+        <Header className={ styles.App__Header }><Title level={2} className={ styles.App__SiteName }>MyCostsGB</Title></Header>
         <Content className={ styles.App__Content }>
           <BrowserRouter>
             {!onAuth &&

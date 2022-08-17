@@ -10,7 +10,6 @@ const { Title } = Typography
 
 const Home = () => {
     return (
-        <div className="Home">
         <div className='Home'>
           <div className="Logout"><Button type="text" onClick={logout}>Logout</Button></div>
             <Title level={2}>Your today costs</Title>
@@ -19,7 +18,6 @@ const Home = () => {
                 <Col span={8}><AddCosts /></Col>
                 <Col span={8}></Col>
             </Row>
-            
         </div>
     );
 };
@@ -27,4 +25,4 @@ const Home = () => {
 
 
 
-export {Home};
+export {Home}

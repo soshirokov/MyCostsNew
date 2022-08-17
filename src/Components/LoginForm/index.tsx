@@ -106,13 +106,11 @@ const LoginForm = ({authed}: Props) => {
           ></Input.Password >
         </Form.Item>
 
-        <Form.Item name="remember" valuePropName="checked" wrapperCol={{ offset: 9, span: 7 }}>
-          <Checkbox>Remember me</Checkbox>
-        </Form.Item>
+   
   
         <Form.Item wrapperCol={{ offset: 9, span: 7 }}>
           <Button type="primary" htmlType="submit">
-            Submit
+            Отправить
           </Button>
         </Form.Item>
       </Form>

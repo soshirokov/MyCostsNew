@@ -36,32 +36,33 @@ const LoginForm = ({authed}: Props) => {
     
         const onFinish = (values: any) => {
             signIn(email, password).catch((error) => {
-                console.log(error.code)
+              
                 
             });
-          console.log('Success:', values);
+          
         };
         const onFinishFailed = (errorInfo: any) => {
-            console.log('Failed:', errorInfo);
+            
           };
          
     return(
         <div className='loginForm'>
-            <Form
-            
-        name="basic"
-        labelCol={{ span: 2 }}
-        wrapperCol={{ span: 6 }}
+            <Form     
+        name="Registration"
+        labelCol={{ span: 9 }}
+        wrapperCol={{ span: 7 }}
         initialValues={{ remember: true }}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
         autoComplete="off"
-        
       >
         <Form.Item
-          label="Username"
+          label="Почта"
           name="username"
-          rules={[{ required: true, message: 'Please input your username!' }]}
+          rules={[{ type: "email", message: 'Введены некорректные данные!' },
+          { required: true, message: 'Пожалуйста, введите адрес почты!', whitespace: true }
+          ]}
+          hasFeedback
         >
           <Input
           onChange={(e:any) => setEmail(e.target.value)}
@@ -70,23 +71,46 @@ const LoginForm = ({authed}: Props) => {
         </Form.Item>
   
         <Form.Item
-       
-          label="Password"
+          label="Пароль"
           name="password"
-          rules={[{ required: true, message: 'Please input your password!' }]}
-          
+          rules={[
+          { required: true, message: 'Пожалуйста, введите пароль!' }
+        ]} 
+          hasFeedback
         >
           <Input.Password 
           onChange={(e:any) => setPassword(e.target.value)}
            value={password}
           ></Input.Password >
         </Form.Item>
-  
-        <Form.Item name="remember" valuePropName="checked" wrapperCol={{ offset: 2, span: 6 }}>
+
+        <Form.Item
+          label="Повторите пароль"
+          name="confirm"
+          rules={[
+          { required: true, message: 'Пожалуйста, повторите пароль!' },
+          ({getFieldValue})=>({
+            validator(_,value){
+              if(!value || getFieldValue("password")===value){
+                return Promise.resolve();
+              }
+              return Promise.reject("Пароли не совпадают")
+            }
+          })
+          ]}
+          dependencies={["password"]}
+          hasFeedback
+        >
+          <Input.Password 
+         
+          ></Input.Password >
+        </Form.Item>
+
+        <Form.Item name="remember" valuePropName="checked" wrapperCol={{ offset: 9, span: 7 }}>
           <Checkbox>Remember me</Checkbox>
         </Form.Item>
   
-        <Form.Item wrapperCol={{ offset: 2, span: 6 }}>
+        <Form.Item wrapperCol={{ offset: 9, span: 7 }}>
           <Button type="primary" htmlType="submit">
             Submit
           </Button>

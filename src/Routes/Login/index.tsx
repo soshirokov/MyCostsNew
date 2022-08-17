@@ -3,6 +3,7 @@ import { LoginForm } from '../../Components/LoginForm';
 
 type Props = {
     authed: boolean
+    
 }
 
 const Login = ({authed}: Props) => {

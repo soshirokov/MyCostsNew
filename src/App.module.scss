@@ -1,15 +1,17 @@
-.App {
-    height: 100%;
-    &__Header {
-        display: flex;
-        align-items: center;
-    }
-    &__Content {
-        padding: 40px 80px;
-    }
+.App{
+  height: 100%;
+
+  &__Header {
+    display: flex;
+    align-items: center;
+  }
+
+  &__Content {
+    padding: 40px 80px;
+  }
 }
 
 h2.App__SiteName {
-    color: #ffffff;
-    margin-bottom: 0;
+  color: #ffffff;
+  margin-bottom: 0;
 }

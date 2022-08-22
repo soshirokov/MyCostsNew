@@ -1,9 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-} from "react-router-dom"
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { onAuthStateChanged } from 'firebase/auth'
 import { auth } from './utils/firebase'
 import { PrivateRoute } from './Routes/PivateRoutes'
@@ -20,36 +16,44 @@ function App() {
   const [authed, setAuthed] = useState(false)
   const [onAuth, setOnAuth] = useState(false)
 
-  useEffect(()=>{
-    setOnAuth(true);
+  useEffect(() => {
+    setOnAuth(true)
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        setAuthed(true);
-        setOnAuth(false);
+        setAuthed(true)
+        setOnAuth(false)
       } else {
-        setAuthed(false);
-        setOnAuth(false);
+        setAuthed(false)
+        setOnAuth(false)
       }
-    });
+    })
 
-    return unsubscribe;
+    return unsubscribe
   }, [])
 
   return (
     <>
-      <Layout className={ styles.App }>
-        <Header className={ styles.App__Header }><Title level={2} className={ styles.App__SiteName }>MyCostsGB</Title></Header>
-        <Content className={ styles.App__Content }>
+      <Layout className={styles.App}>
+        <Header className={styles.App__Header}>
+          <Title level={2} className={styles.App__SiteName}>
+            MyCostsGB
+          </Title>
+        </Header>
+        <Content className={styles.App__Content}>
           <BrowserRouter>
-            {!onAuth &&
-              (<Routes>
+            {!onAuth && (
+              <Routes>
                 <Route path="/" element={<PrivateRoute authed={authed} />}>
                   <Route path="" element={<Home />} />
                 </Route>
                 <Route path="/login" element={<Login authed={authed} />}>
-                  <Route path="redirect/:redirect" element={<Login authed={authed} />} />
+                  <Route
+                    path="redirect/:redirect"
+                    element={<Login authed={authed} />}
+                  />
                 </Route>
-              </Routes>)}
+              </Routes>
+            )}
           </BrowserRouter>
         </Content>
       </Layout>

@@ -1,21 +1,29 @@
-import React from 'react';
-import { LoginForm } from '../../Components/LoginForm';
-import  "./style/index.scss"
+import { Switch } from 'antd'
+import React, { useState } from 'react'
+import { LoginForm } from '../../Components/LoginForm'
+import { RegistrationForm } from '../../Components/RegistrationForm'
+import './style/index.scss'
 
 type Props = {
-    authed: boolean
-    
+  authed: boolean
 }
 
-const Login = ({authed}: Props) => {
-    return (
-       
-        <div className='login'>
-        <h1>Регистрация</h1>
-            <LoginForm authed={ authed } />
-        </div>
-     
-    );
-};
+const Login = ({ authed }: Props) => {
+  const [check, setCheck] = useState<boolean>(false)
 
-export {Login};
+  const switchChangeHandler = (checked: boolean) => {
+    setCheck(checked)
+  }
+
+  return (
+    <div className="login">
+      <h1>
+        SignIn <Switch onChange={switchChangeHandler} /> SignUp
+      </h1>
+      {!check && <LoginForm authed={authed} />}
+      {check && <RegistrationForm authed={authed} />}
+    </div>
+  )
+}
+
+export { Login }

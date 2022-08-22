@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
 import { Navigate, useParams } from 'react-router-dom'
-import { signIn, signInWithGoogle } from '../../utils/firebase'
+import { registerWithEmail, signInWithGoogle } from '../../utils/firebase'
 import { Button, Form, Input } from 'antd'
 
 type Props = {
   authed: boolean
 }
 
-const LoginForm = ({ authed }: Props) => {
+const RegistrationForm = ({ authed }: Props) => {
   const { redirect } = useParams()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -21,7 +21,7 @@ const LoginForm = ({ authed }: Props) => {
   }
 
   const onFinish = (values: any) => {
-    signIn(email, password)
+    registerWithEmail(email, password)
   }
   const onFinishFailed = (errorInfo: any) => {}
 
@@ -64,16 +64,41 @@ const LoginForm = ({ authed }: Props) => {
           <Input.Password
             onChange={(e: any) => setPassword(e.target.value)}
             value={password}
+            minLength={6}
           ></Input.Password>
+        </Form.Item>
+
+        <Form.Item
+          label="Re-type your password"
+          name="confirm"
+          rules={[
+            { required: true, message: 'Re-type your password!' },
+            ({ getFieldValue }) => ({
+              validator(_, value) {
+                if (!value || getFieldValue('password') === value) {
+                  return Promise.resolve()
+                }
+                // eslint-disable-next-line prefer-promise-reject-errors
+                return Promise.reject('Passwords are different')
+              },
+            }),
+          ]}
+          dependencies={['password']}
+          hasFeedback
+        >
+          <Input.Password></Input.Password>
         </Form.Item>
 
         <Form.Item wrapperCol={{ offset: 9, span: 7 }}>
           <Button type="primary" htmlType="submit">
-            Sign In
+            Sign Up
           </Button>
-          <span style={{ marginRight: 20, marginLeft: 20 }}>OR</span>
+        </Form.Item>
+
+        <Form.Item wrapperCol={{ offset: 9, span: 7 }}>
+          <span style={{ marginRight: 20 }}>OR</span>
           <Button type="primary" onClick={signInWithGoogle}>
-            Sign In with Google
+            Sign Up with Google
           </Button>
         </Form.Item>
       </Form>
@@ -81,4 +106,4 @@ const LoginForm = ({ authed }: Props) => {
   )
 }
 
-export { LoginForm }
+export { RegistrationForm }

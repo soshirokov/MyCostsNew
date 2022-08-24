@@ -26,7 +26,7 @@ const PieChart = ({ costs }: any) => {
         show: false,
       },
       colors: [
-        'rgba(63, 42, 255, 1)',
+        'rgba(63, 42, 255, 1.1)',
         'rgba(63, 42, 255, 0.95)',
         'rgba(63, 42, 255, 0.9)',
         'rgba(63, 42, 255, 0.85)',

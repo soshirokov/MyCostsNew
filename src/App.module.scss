@@ -1,9 +1,9 @@
-.App{
+.App {
   height: 100%;
 
   &__Header {
-    display: flex;
     align-items: center;
+    display: flex;
   }
 
   &__Content {
@@ -12,6 +12,6 @@
 }
 
 h2.App__SiteName {
-  color: #ffffff;
+  color: #fff;
   margin-bottom: 0;
 }

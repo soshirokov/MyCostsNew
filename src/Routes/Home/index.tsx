@@ -2,6 +2,7 @@ import React from 'react'
 import { Col, Row, Typography, Button } from 'antd'
 import NewCalendar from '../../Components/Calendar'
 import { AddCosts } from '../../Components/AddCosts'
+import { PieChart } from '../../Components/PieChart'
 import { logout } from '../../utils/firebase'
 import './style/index.scss'
 
@@ -23,7 +24,9 @@ const Home = () => {
         <Col span={8}>
           <AddCosts />
         </Col>
-        <Col span={8}></Col>
+        <Col span={8}>
+          <PieChart />
+        </Col>
       </Row>
     </div>
   )

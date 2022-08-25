@@ -7,8 +7,12 @@ export const Profile: React.FC = () => {
   return (
     <>
       <div className={styles.Profile}>
-        <UserInformation />
-        <CategoriesSetting />
+        <div className={styles.Profile__UserInformation}>
+          <UserInformation />
+        </div>
+        <div className={styles.Profile__CategoriesSetting}>
+          <CategoriesSetting />
+        </div>
       </div>
     </>
   )

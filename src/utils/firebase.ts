@@ -44,6 +44,10 @@ export const registerWithEmail = (email: string, password: string) =>
 // Методы для базы данных
 const database = getDatabase(app)
 
+// Профиль пользователя
+export const costLevelRef = (userId: string) =>
+  ref(database, `profiles/${userId}/costLevel`)
+
 // Категории пользователя
 export const userCategories = (userId: string) =>
   ref(database, `profiles/${userId}/categories`)

@@ -78,7 +78,12 @@ function App() {
                 <Route path="/" element={<PrivateRoute authed={authed} />}>
                   <Route path="" element={<Home />} />
                 </Route>
-                <Route path="/profile" element={<Profile />} />
+                <Route
+                  path="/profile"
+                  element={<PrivateRoute authed={authed} path="profile" />}
+                >
+                  <Route path="" element={<Profile />} />
+                </Route>
                 <Route path="/login" element={<Login authed={authed} />}>
                   <Route
                     path="redirect/:redirect"

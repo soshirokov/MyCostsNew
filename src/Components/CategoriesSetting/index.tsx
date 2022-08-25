@@ -23,6 +23,8 @@ export const CategoriesSetting = () => {
   const addCategoryHandler = () => {
     if (auth?.currentUser?.uid) {
       set(userCategories(auth?.currentUser?.uid), [...categories, newCategory])
+
+      setNewCategory('')
     }
   }
 
@@ -67,6 +69,7 @@ export const CategoriesSetting = () => {
         size="large"
         className={styles.CategorySetting__Input}
         onChange={(e) => setNewCategory(e.target.value)}
+        value={newCategory}
       />
       <div className={styles.CategorySetting__AddButtonBox}>
         <Button

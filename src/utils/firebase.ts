@@ -53,3 +53,5 @@ export const userCategories = (userId: string) =>
   ref(database, `profiles/${userId}/categories`)
 export const costByDateRef = (userId: string, date: string) =>
   ref(database, `costs/${userId}/${date}`)
+export const costByUserRef = (userId: string) =>
+  ref(database, `costs/${userId}`)

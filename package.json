@@ -71,6 +71,7 @@
     "web-vitals": "^2.1.4"
   },
   "dependencies": {
-    "@ant-design/icons": "^4.7.0"
+    "apexcharts": "^3.35.5",
+    "react-apexcharts": "^1.4.0"
   }
 }

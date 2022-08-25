@@ -1,17 +1,27 @@
-.App{
+.App {
   height: 100%;
 
   &__Header {
-    display: flex;
     align-items: center;
+    display: flex;
   }
 
   &__Content {
     padding: 40px 80px;
   }
+
+  &__Logout {
+    margin-top: 20px;
+  }
+
+  &__MenuIcon {
+    color: #fff;
+    font-size: 20px;
+    margin-right: 20px;
+  }
 }
 
 h2.App__SiteName {
-  color: #ffffff;
+  color: #fff;
   margin-bottom: 0;
 }

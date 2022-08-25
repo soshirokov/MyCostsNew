@@ -41,8 +41,6 @@ const Home = () => {
         limitToFirst(lastDayOfStats)
       )
 
-      console.log(myQuery)
-
       onValue(myQuery, (snapshot) => setCosts(snapshot.val() || []))
     }
   }, [selectedDate])

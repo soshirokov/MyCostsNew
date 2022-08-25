@@ -8,19 +8,21 @@ type Props = {
 }
 
 const PieChart = ({ costs, categories }: Props) => {
-  console.log(costs)
-
   const sortedCosts = categories
     .map((category) => {
       return {
         category,
-        total: Object.keys(costs).reduce(
-          (total, key) => total + +costs[key].details[category],
-          0
-        ),
+        total: Object.keys(costs).reduce((total, key) => {
+          const costTotal = costs[key].details[category]
+            ? +costs[key].details[category]
+            : 0
+          return total + costTotal
+        }, 0),
       }
     })
     .sort((a, b): any => a.total < b.total)
+
+  console.log(sortedCosts)
 
   const settings = {
     chart: {

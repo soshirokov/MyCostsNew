@@ -5,6 +5,7 @@ import { auth, logout } from './utils/firebase'
 import { PrivateRoute } from './Routes/PivateRoutes'
 import { Home } from './Routes/Home'
 import { Login } from './Routes/Login'
+import { Profile } from './Routes/Profile'
 import 'antd/dist/antd.min.css'
 import { Button, Drawer, Layout, List, Typography } from 'antd'
 import { MenuUnfoldOutlined } from '@ant-design/icons'
@@ -77,6 +78,7 @@ function App() {
                 <Route path="/" element={<PrivateRoute authed={authed} />}>
                   <Route path="" element={<Home />} />
                 </Route>
+                <Route path="/profile" element={<Profile />} />
                 <Route path="/login" element={<Login authed={authed} />}>
                   <Route
                     path="redirect/:redirect"

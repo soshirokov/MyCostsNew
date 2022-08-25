@@ -1,9 +1,16 @@
 import React from 'react'
 import Chart from 'react-apexcharts'
-import { details } from '../CostsServer/details'
+import { CostsServer } from '../../utils/types'
 
-const PieChart = ({ costs }: any) => {
-  const sortedCosts = Object.keys(details)
+type Props = {
+  costs: CostsServer
+  categories: Array<string>
+}
+
+const PieChart = ({ costs, categories }: Props) => {
+  console.log(costs)
+
+  const sortedCosts = categories
     .map((category) => {
       return {
         category,

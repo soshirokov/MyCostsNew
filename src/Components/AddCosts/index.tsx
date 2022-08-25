@@ -4,19 +4,8 @@ import { ChangeEvent, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { currentDateSelector } from '../../Store/Calendar/selectors'
 import { auth, costByDateRef, userCategories } from '../../utils/firebase'
+import { Costs, CostServer } from '../../utils/types'
 import styles from './styles.module.scss'
-
-type Costs = {
-  [key: string]: string
-}
-
-type CostsServer = {
-  dateTime: string
-  details: {
-    [key: string]: string
-  }
-  total: string
-}
 
 // Используется только с календарем и авторизацией
 export const AddCosts = () => {
@@ -33,7 +22,7 @@ export const AddCosts = () => {
       onValue(
         costByDateRef(auth.currentUser.uid, currentDate.format('DD-MM-YYYY')),
         (snapshot) => {
-          const costsFromServer: CostsServer = snapshot.val()
+          const costsFromServer: CostServer = snapshot.val()
           if (costsFromServer) {
             setCosts(costsFromServer.details)
           } else {

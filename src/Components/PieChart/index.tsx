@@ -22,8 +22,6 @@ const PieChart = ({ costs, categories }: Props) => {
     })
     .sort((a, b): any => a.total < b.total)
 
-  console.log(sortedCosts)
-
   const settings = {
     chart: {
       width: '100%',

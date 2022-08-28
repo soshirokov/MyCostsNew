@@ -7,7 +7,7 @@ export type CostServer = {
   details: {
     [key: string]: string
   }
-  total: string
+  total: number
 }
 
 export type CostsServer = {

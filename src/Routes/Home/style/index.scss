@@ -1,11 +1,5 @@
-.Logout {
-  left: 92%;
-  position: absolute;
-  top: 1%;
-
-  span {
-    color: rgb(255 255 255);
-    font-size: 20px;
-    font-weight: 500;
+.Home {
+  &__Calendar {
+    padding: 0 70px 0 0;
   }
 }

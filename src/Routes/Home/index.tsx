@@ -9,18 +9,13 @@ import {
   costLevelRef,
   userCategories,
 } from '../../utils/firebase'
-import {
-  limitToFirst,
-  onValue,
-  orderByChild,
-  query,
-  startAt,
-} from 'firebase/database'
+import { endAt, onValue, orderByChild, query, startAt } from 'firebase/database'
 import { useSelector } from 'react-redux'
 import { currentDateSelector } from '../../Store/Calendar/selectors'
 import moment from 'moment'
 import { CostsServer } from '../../utils/types'
 import { CostStats } from '../../Components/CostStats'
+import './style/index.scss'
 
 const { Title } = Typography
 
@@ -45,15 +40,15 @@ const Home = () => {
       const lastDayOfStats =
         selectedDate.month() < today.month() &&
         selectedDate.year() <= today.year()
-          ? selectedDate.endOf('month').date()
-          : today.date()
+          ? selectedDate.endOf('month')
+          : today.endOf('day')
       const firstDayOfStats = selectedDate.startOf('month')
 
       const myQuery = query(
         costByUserRef(auth.currentUser.uid),
         orderByChild('dateTime'),
-        startAt(firstDayOfStats.millisecond()),
-        limitToFirst(lastDayOfStats)
+        startAt(firstDayOfStats.format('x')),
+        endAt(lastDayOfStats.format('x'))
       )
 
       onValue(myQuery, (snapshot) => setCosts(snapshot.val() || {}))
@@ -76,13 +71,19 @@ const Home = () => {
       <Title level={2}>Your today costs</Title>
       <Row>
         <Col span={8}>
-          <NewCalendar />
+          <div className="Home__Calendar">
+            <NewCalendar />
+          </div>
         </Col>
         <Col span={8}>
-          <AddCosts />
+          <div className="Home__AddCosts">
+            <AddCosts />
+          </div>
         </Col>
         <Col span={8}>
-          <PieChart categories={categories} costs={costs} />
+          <div className="Home__Charts">
+            <PieChart categories={categories} costs={costs} />
+          </div>
         </Col>
       </Row>
     </div>

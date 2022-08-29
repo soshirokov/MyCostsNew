@@ -10,6 +10,7 @@ import 'antd/dist/antd.min.css'
 import { Button, Drawer, Layout, List, Typography } from 'antd'
 import { MenuUnfoldOutlined } from '@ant-design/icons'
 import styles from './App.module.scss'
+import { Analitics } from './Routes/Analitics'
 
 const { Header, Content } = Layout
 const { Title } = Typography
@@ -21,6 +22,7 @@ function App() {
 
   const pages = [
     { name: 'Home', link: '/' },
+    { name: 'Analytics', link: '/analytics' },
     { name: 'Profile', link: '/profile' },
   ]
 
@@ -77,6 +79,12 @@ function App() {
               <Routes>
                 <Route path="/" element={<PrivateRoute authed={authed} />}>
                   <Route path="" element={<Home />} />
+                </Route>
+                <Route
+                  path="/analytics"
+                  element={<PrivateRoute authed={authed} path="analytics" />}
+                >
+                  <Route path="" element={<Analitics />} />
                 </Route>
                 <Route
                   path="/profile"

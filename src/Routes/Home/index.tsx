@@ -25,9 +25,6 @@ const Home = () => {
   const [categories, setCategories] = useState<Array<string>>([])
   const [costs, setCosts] = useState<CostsServer>({})
 
-  console.log(costs)
-  console.log(categories)
-
   useEffect(() => {
     if (auth?.currentUser?.uid && selectedDate.isValid()) {
       const today = moment()

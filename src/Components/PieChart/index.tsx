@@ -22,9 +22,6 @@ const PieChart = ({ costs, categories }: Props) => {
     })
     .sort((a, b): any => a.total < b.total)
 
-  console.log(sortedCosts)
-  console.log(Object.keys(costs))
-
   const settings = {
     options: {
       size: 300,

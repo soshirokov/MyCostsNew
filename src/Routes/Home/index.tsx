@@ -4,7 +4,12 @@ import NewCalendar from '../../Components/Calendar'
 import { AddCosts } from '../../Components/AddCosts'
 import { PieChart } from '../../Components/PieChart'
 import { StatsLineChart } from '../../Components/StatsLineChart'
-import { auth, costByUserRef, userCategories } from '../../utils/firebase'
+import {
+  auth,
+  costByUserRef,
+  costLevelRef,
+  userCategories,
+} from '../../utils/firebase'
 import {
   limitToFirst,
   onValue,
@@ -16,6 +21,7 @@ import { useSelector } from 'react-redux'
 import { currentDateSelector } from '../../Store/Calendar/selectors'
 import moment from 'moment'
 import { CostsServer } from '../../utils/types'
+import { CostStats } from '../../Components/CostStats'
 
 const { Title } = Typography
 
@@ -24,6 +30,15 @@ const Home = () => {
 
   const [categories, setCategories] = useState<Array<string>>([])
   const [costs, setCosts] = useState<CostsServer>({})
+  const [costLevel, setCostLevel] = useState(0)
+
+  useEffect(() => {
+    if (auth?.currentUser?.uid) {
+      onValue(costLevelRef(auth.currentUser.uid), (snapshot) =>
+        setCostLevel(snapshot.val() || 0)
+      )
+    }
+  }, [])
 
   useEffect(() => {
     if (auth?.currentUser?.uid && selectedDate.isValid()) {
@@ -56,7 +71,10 @@ const Home = () => {
 
   return (
     <div className="Home">
-      <Title level={2}>Ваши расходы на сегодня</Title>
+      {Object.keys(costs).length > 0 && (
+        <CostStats costs={costs} costLevel={costLevel} />
+      )}
+      <Title level={2}>Your today costs</Title>
       <Row>
         <Col span={6}>
           <NewCalendar />

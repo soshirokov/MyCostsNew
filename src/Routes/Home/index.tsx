@@ -3,6 +3,7 @@ import { Col, Row, Typography } from 'antd'
 import NewCalendar from '../../Components/Calendar'
 import { AddCosts } from '../../Components/AddCosts'
 import { PieChart } from '../../Components/PieChart'
+import { StatsLineChart } from '../../Components/StatsLineChart'
 import {
   auth,
   costByUserRef,
@@ -63,7 +64,7 @@ const Home = () => {
   useEffect(() => {
     if (auth?.currentUser?.uid) {
       onValue(userCategories(auth.currentUser.uid), (snapshot) => {
-        setCategories(snapshot.val() ? snapshot.val() : [])
+        setCategories(snapshot.val() ? snapshot.val() : {})
       })
     }
   }, [])
@@ -75,14 +76,17 @@ const Home = () => {
       )}
       <Title level={2}>Your today costs</Title>
       <Row>
-        <Col span={8}>
+        <Col span={6}>
           <NewCalendar />
         </Col>
-        <Col span={8}>
+        <Col span={6}>
           <AddCosts />
         </Col>
-        <Col span={8}>
+        <Col span={6}>
           <PieChart categories={categories} costs={costs} />
+        </Col>
+        <Col span={6}>
+          <StatsLineChart costs={costs} />
         </Col>
       </Row>
     </div>

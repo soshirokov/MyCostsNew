@@ -23,38 +23,38 @@ const PieChart = ({ costs, categories }: Props) => {
     .sort((a, b): any => a.total < b.total)
 
   const settings = {
-    chart: {
-      width: '100%',
-      height: 380,
-    },
     options: {
+      size: 300,
       labels: sortedCosts.map((cost) => cost.category),
       legend: {
         show: false,
       },
       colors: [
-        'rgba(63, 42, 255, 1.1)',
-        'rgba(63, 42, 255, 0.95)',
-        'rgba(63, 42, 255, 0.9)',
-        'rgba(63, 42, 255, 0.85)',
-        'rgba(63, 42, 255, 0.8)',
-        'rgba(63, 42, 255, 0.75)',
-        'rgba(63, 42, 255, 0.7)',
-        'rgba(63, 42, 255, 0.65)',
-        'rgba(63, 42, 255, 0.6)',
-        'rgba(63, 42, 255, 0.55)',
-        'rgba(63, 42, 255, 0.5)',
-        'rgba(63, 42, 255, 0.45)',
-        'rgba(63, 42, 255, 0.4)',
-        'rgba(63, 42, 255, 0.35)',
-        'rgba(63, 42, 255, 0.3)',
-        'rgba(63, 42, 255, 0.25)',
+        '#14171a',
+        '#39434c',
+        '#4f5c69',
+        '#5a6977',
+        '#697b8c',
+        '#7f8f9f',
+        '#9ca9b4',
+        '#b9c2ca',
+        '#d9dee2',
+        '#ebedf0',
+        '#394c49',
+        '#465d5a',
+        '#516c68',
+        '#60807c',
+        '#6e918d',
+        '#8ea9a6',
+        '#b1c4c1',
+        '#d0dcda',
       ],
       tooltip: {
         enabled: false,
       },
       plotOptions: {
         pie: {
+          size: 30,
           startAngle: -140,
           endAngle: 140,
           expandOnClick: false,
@@ -62,10 +62,10 @@ const PieChart = ({ costs, categories }: Props) => {
             labels: {
               show: true,
               name: {
-                color: '#3f2aff',
+                color: '#14171a',
               },
               value: {
-                fontSize: '16px',
+                fontSize: '18px',
                 formatter: function (val: String) {
                   return (+val).toLocaleString('ru-RU', {
                     style: 'currency',
@@ -77,8 +77,8 @@ const PieChart = ({ costs, categories }: Props) => {
                 show: true,
                 color: '#000000',
                 label: 'Всего за месяц',
-                fontSize: '14px',
-                fontWeight: 600,
+                fontSize: '20px',
+                fontWeight: 900,
                 formatter: function (w: any) {
                   return w.globals.seriesTotals
                     .reduce((a: any, b: any) => {

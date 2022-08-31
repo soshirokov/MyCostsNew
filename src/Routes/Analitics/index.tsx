@@ -4,6 +4,7 @@ import { Moment } from 'moment'
 import { useCallback, useEffect, useState } from 'react'
 import { CategoiesPicker } from '../../Components/CategoiesPicker'
 import { PieChart } from '../../Components/PieChart'
+import { StatsLineChart } from '../../Components/StatsLineChart'
 import { DateRangePicker } from '../../DateRangePicker'
 import { auth, costByUserRef, userCategories } from '../../utils/firebase'
 import { Categories, CostsServer } from '../../utils/types'
@@ -15,6 +16,12 @@ const Analitics = () => {
   const [range, setRange] = useState<[Moment, Moment]>()
   const [costs, setCosts] = useState<CostsServer>({})
   const [filteredCosts, setFilteredCosts] = useState<CostsServer>({})
+
+  const showGraphs =
+    range &&
+    range[0].isValid() &&
+    range[1].isValid() &&
+    selectedCategories.length > 0
 
   useEffect(() => {
     if (
@@ -84,6 +91,8 @@ const Analitics = () => {
     filterCosts(costs)
   }, [selectedCategories, costs, filterCosts])
 
+  console.log(Object.keys(filteredCosts).length)
+
   return (
     <div className={styles.Analitics}>
       <Row>
@@ -100,9 +109,13 @@ const Analitics = () => {
             </div>
           )}
         </Col>
-        <Col span={8}></Col>
         <Col span={8}>
-          <PieChart categories={selectedCategories} costs={filteredCosts} />
+          {showGraphs && <StatsLineChart costs={filteredCosts} />}
+        </Col>
+        <Col span={8}>
+          {showGraphs && (
+            <PieChart categories={selectedCategories} costs={filteredCosts} />
+          )}
         </Col>
       </Row>
     </div>

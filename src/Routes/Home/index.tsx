@@ -16,7 +16,6 @@ import { currentDateSelector } from '../../Store/Calendar/selectors'
 import moment from 'moment'
 import { CostsServer } from '../../utils/types'
 import { CostStats } from '../../Components/CostStats'
-import './style/index.scss'
 
 const { Title } = Typography
 
@@ -70,20 +69,22 @@ const Home = () => {
         <CostStats costs={costs} costLevel={costLevel} />
       )}
       <Title level={2}>Your today costs</Title>
-      <Row>
-        <Col span={8}>
+      <Row gutter={80}>
+        <Col span={6}>
           <div className="Home__Calendar">
             <NewCalendar />
           </div>
         </Col>
-        <Col span={8}>
+        <Col span={10}>
           <div className="Home__AddCosts">
             <AddCosts />
           </div>
         </Col>
         <Col span={8}>
-          <div className="Home__Charts">
+          <div className="Home__PieChart">
             <PieChart categories={categories} costs={costs} />
+          </div>
+          <div className="Home__LineChart">
             <StatsLineChart costs={costs} />
           </div>
         </Col>

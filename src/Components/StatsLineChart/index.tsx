@@ -13,7 +13,7 @@ const StatsLineChart = ({ costs }: Props) => {
   const costsKeysSorted = Object.keys(costs).sort((a, b) =>
     costs[a].dateTime > costs[b].dateTime ? 1 : -1
   )
-  costsData.push(...costsKeysSorted.map((key) => costs[key].total))
+  costsData.push(...costsKeysSorted.map((key) => +costs[key].total))
   costsSeries.push(...costsKeysSorted)
 
   const settings = {

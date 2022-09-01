@@ -4,13 +4,13 @@ import { ChangeEvent, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { currentDateSelector } from '../../Store/Calendar/selectors'
 import { auth, costByDateRef, userCategories } from '../../utils/firebase'
-import { Costs, CostServer } from '../../utils/types'
+import { Categories, Costs, CostServer } from '../../utils/types'
 import styles from './styles.module.scss'
 
 // Используется только с календарем и авторизацией
 export const AddCosts = () => {
   const currentDate = useSelector(currentDateSelector)
-  const [categories, setCategories] = useState<Array<string>>([])
+  const [categories, setCategories] = useState<Categories>([])
   const [costs, setCosts] = useState<Costs>({})
 
   useEffect(() => {

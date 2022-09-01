@@ -7,9 +7,11 @@ export type CostServer = {
   details: {
     [key: string]: string
   }
-  total: number
+  total: string | number
 }
 
 export type CostsServer = {
   [key: string]: CostServer
 }
+
+export type Categories = Array<string>

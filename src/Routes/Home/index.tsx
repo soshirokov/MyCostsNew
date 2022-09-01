@@ -10,13 +10,7 @@ import {
   costLevelRef,
   userCategories,
 } from '../../utils/firebase'
-import {
-  limitToFirst,
-  onValue,
-  orderByChild,
-  query,
-  startAt,
-} from 'firebase/database'
+import { endAt, onValue, orderByChild, query, startAt } from 'firebase/database'
 import { useSelector } from 'react-redux'
 import { currentDateSelector } from '../../Store/Calendar/selectors'
 import moment from 'moment'
@@ -46,15 +40,15 @@ const Home = () => {
       const lastDayOfStats =
         selectedDate.month() < today.month() &&
         selectedDate.year() <= today.year()
-          ? selectedDate.endOf('month').date()
-          : today.date()
+          ? selectedDate.endOf('month')
+          : today.endOf('day')
       const firstDayOfStats = selectedDate.startOf('month')
 
       const myQuery = query(
         costByUserRef(auth.currentUser.uid),
         orderByChild('dateTime'),
-        startAt(firstDayOfStats.millisecond()),
-        limitToFirst(lastDayOfStats)
+        startAt(firstDayOfStats.format('x')),
+        endAt(lastDayOfStats.format('x'))
       )
 
       onValue(myQuery, (snapshot) => setCosts(snapshot.val() || {}))
@@ -75,18 +69,24 @@ const Home = () => {
         <CostStats costs={costs} costLevel={costLevel} />
       )}
       <Title level={2}>Your today costs</Title>
-      <Row>
+      <Row gutter={80}>
         <Col span={6}>
-          <NewCalendar />
+          <div className="Home__Calendar">
+            <NewCalendar />
+          </div>
         </Col>
-        <Col span={6}>
-          <AddCosts />
+        <Col span={10}>
+          <div className="Home__AddCosts">
+            <AddCosts />
+          </div>
         </Col>
-        <Col span={6}>
-          <PieChart categories={categories} costs={costs} />
-        </Col>
-        <Col span={6}>
-          <StatsLineChart costs={costs} />
+        <Col span={8}>
+          <div className="Home__PieChart">
+            <PieChart categories={categories} costs={costs} />
+          </div>
+          <div className="Home__LineChart">
+            <StatsLineChart costs={costs} />
+          </div>
         </Col>
       </Row>
     </div>

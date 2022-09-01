@@ -4,12 +4,13 @@ import Input from 'antd/lib/input/Input'
 import { onValue, set } from 'firebase/database'
 import { useEffect, useState } from 'react'
 import { auth, userCategories } from '../../utils/firebase'
+import { Categories } from '../../utils/types'
 import styles from './styles.module.scss'
 
 const { Title } = Typography
 
 export const CategoriesSetting = () => {
-  const [categories, setCategories] = useState<Array<string>>([])
+  const [categories, setCategories] = useState<Categories>([])
   const [newCategory, setNewCategory] = useState<string>()
 
   useEffect(() => {

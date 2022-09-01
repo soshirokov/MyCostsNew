@@ -91,8 +91,6 @@ const Analitics = () => {
     filterCosts(costs)
   }, [selectedCategories, costs, filterCosts])
 
-  console.log(Object.keys(filteredCosts).length)
-
   return (
     <div className={styles.Analitics}>
       <Row>

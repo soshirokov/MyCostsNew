@@ -2,6 +2,7 @@ import { Col, Row } from 'antd'
 import moment, { Moment } from 'moment'
 import { useSelector } from 'react-redux'
 import { currentDateSelector } from '../../Store/Calendar/selectors'
+import { getEndOfMonth } from '../../utils/helpers'
 import { CostsServer } from '../../utils/types'
 import { CostStatElement } from '../CostStatElement'
 import styles from './styles.module.scss'
@@ -24,23 +25,28 @@ const CostStats = ({ costs, costLevel }: Props) => {
   )
   const daysInCount = isCurrentMonth(selectedDate)
     ? maxDayInCosts.date()
-    : selectedDate.endOf('month').date()
+    : getEndOfMonth(selectedDate).date()
 
   const monthCostTotal = Object.keys(costs).reduce(
     (acc, key) => acc + +costs[key].total,
     0
   )
+
   const averageCosts = Math.ceil(monthCostTotal / daysInCount)
   const dayCost = costs[selectedDate.format('DD-MM-YYYY')]
     ? costs[selectedDate.format('DD-MM-YYYY')].total
     : 0
-  const forecastCosts = averageCosts * selectedDate.endOf('month').date()
+  const forecastCosts = averageCosts * getEndOfMonth(selectedDate).date()
   const balanceCostsTotal = costLevel - monthCostTotal
   const balanceAverageCosts =
-    balanceCostsTotal /
-    (selectedDate.endOf('month').date() - maxDayInCosts.date())
+    getEndOfMonth(selectedDate).date() - maxDayInCosts.date() > 0
+      ? balanceCostsTotal /
+        (getEndOfMonth(selectedDate).date() - maxDayInCosts.date())
+      : 0
   const balanceCostLevel =
-    costLevel / (selectedDate.endOf('month').date() - maxDayInCosts.date())
+    getEndOfMonth(selectedDate).date() - maxDayInCosts.date() > 0
+      ? costLevel / (getEndOfMonth(selectedDate).date() - maxDayInCosts.date())
+      : 0
 
   return (
     <div className={styles.CostStats}>
@@ -53,13 +59,13 @@ const CostStats = ({ costs, costLevel }: Props) => {
             title="В среднем за день"
             sum={+averageCosts}
             additionalSum={
-              +averageCosts - costLevel / selectedDate.endOf('month').date()
+              +averageCosts - costLevel / getEndOfMonth(selectedDate).date()
             }
             more={
-              +averageCosts > costLevel / selectedDate.endOf('month').date()
+              +averageCosts > costLevel / getEndOfMonth(selectedDate).date()
             }
             type={
-              +averageCosts > costLevel / selectedDate.endOf('month').date()
+              +averageCosts > costLevel / getEndOfMonth(selectedDate).date()
                 ? 'negative'
                 : 'positive'
             }
@@ -83,15 +89,15 @@ const CostStats = ({ costs, costLevel }: Props) => {
             sum={+balanceAverageCosts}
             additionalSum={
               +balanceAverageCosts -
-              costLevel / selectedDate.endOf('month').date()
+              costLevel / getEndOfMonth(selectedDate).date()
             }
             more={
               +balanceAverageCosts >
-              costLevel / selectedDate.endOf('month').date()
+              costLevel / getEndOfMonth(selectedDate).date()
             }
             type={
               +balanceAverageCosts <
-              costLevel / selectedDate.endOf('month').date()
+              costLevel / getEndOfMonth(selectedDate).date()
                 ? 'negative'
                 : 'positive'
             }
@@ -100,7 +106,7 @@ const CostStats = ({ costs, costLevel }: Props) => {
         <Col span={4}>
           <CostStatElement
             title={`Осталось на ${
-              selectedDate.endOf('month').date() - maxDayInCosts.date()
+              getEndOfMonth(selectedDate).date() - maxDayInCosts.date()
             } дней`}
             sum={+balanceCostsTotal}
             additionalSum={+balanceCostsTotal - balanceCostLevel}

@@ -16,6 +16,7 @@ import { currentDateSelector } from '../../Store/Calendar/selectors'
 import moment from 'moment'
 import { CostsServer } from '../../utils/types'
 import { CostStats } from '../../Components/CostStats'
+import { getEndOfMonth, getStartOfMonth } from '../../utils/helpers'
 
 const { Title } = Typography
 
@@ -42,9 +43,9 @@ const Home = () => {
       const lastDayOfStats =
         selectedDate.month() < today.month() &&
         selectedDate.year() <= today.year()
-          ? selectedDate.endOf('month')
+          ? getEndOfMonth(selectedDate)
           : today.endOf('day')
-      const firstDayOfStats = selectedDate.startOf('month')
+      const firstDayOfStats = getStartOfMonth(selectedDate)
 
       const myQuery = query(
         costByUserRef(auth.currentUser.uid),

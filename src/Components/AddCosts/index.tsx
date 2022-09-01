@@ -59,6 +59,10 @@ export const AddCosts = () => {
     // eslint-disable-next-line
     const toSave = e.target.value ? eval(e.target.value) : ''
 
+    if (+e.target.value === 0) {
+      e.target.value = ''
+    }
+
     const newCosts = { ...costs, [category]: toSave }
 
     setCosts(newCosts)
@@ -98,7 +102,8 @@ export const AddCosts = () => {
       {categories.length > 0 &&
         categories.map((category) => (
           <Input
-            value={costs[category]}
+            value={costs[category] !== '0' ? costs[category] : ''}
+            defaultValue=""
             className={styles.AddCosts__Input}
             onChange={(e) => changeHandler(e, category)}
             onBlur={(e) => blurHandler(e, category)}

@@ -26,6 +26,8 @@ const Home = () => {
   const [costs, setCosts] = useState<CostsServer>({})
   const [costLevel, setCostLevel] = useState(0)
 
+  const ShowCharts = categories.length > 0 && Object.keys(costs).length > 0
+
   useEffect(() => {
     if (auth?.currentUser?.uid) {
       onValue(costLevelRef(auth.currentUser.uid), (snapshot) =>
@@ -82,10 +84,10 @@ const Home = () => {
         </Col>
         <Col span={8}>
           <div className="Home__PieChart">
-            <PieChart categories={categories} costs={costs} />
+            {ShowCharts && <PieChart categories={categories} costs={costs} />}
           </div>
           <div className="Home__LineChart">
-            <StatsLineChart costs={costs} />
+            {ShowCharts && <StatsLineChart costs={costs} />}
           </div>
         </Col>
       </Row>

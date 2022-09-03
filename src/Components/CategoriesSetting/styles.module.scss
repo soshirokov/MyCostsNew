@@ -1,0 +1,14 @@
+.CategorySetting {
+  &__Input {
+    margin-top: 40px;
+  }
+
+  &__AddButtonBox {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  &__AddButton {
+    margin-top: 20px;
+  }
+}

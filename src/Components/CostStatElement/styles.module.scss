@@ -1,0 +1,11 @@
+.CostStatElem {
+  &__Sum {
+    font-size: 16px;
+  }
+
+  &__AdditionalSum {
+    font-size: 12px;
+    margin-left: 5px;
+    white-space: nowrap;
+  }
+}

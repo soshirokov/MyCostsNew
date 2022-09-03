@@ -1,0 +1,11 @@
+.UserInformation {
+  &__Input {
+    margin-bottom: 5px;
+  }
+
+  &__ButtonBox {
+    display: flex;
+    justify-content: flex-end;
+    margin: 20px auto;
+  }
+}

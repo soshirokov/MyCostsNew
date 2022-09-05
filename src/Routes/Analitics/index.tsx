@@ -10,6 +10,7 @@ import { DateRangePicker } from '../../DateRangePicker'
 import { auth, costByUserRef, userCategories } from '../../utils/firebase'
 import { Categories, CostsServer } from '../../utils/types'
 import styles from './styles.module.scss'
+import { demoData } from '../../utils/demoData'
 
 const Analitics = () => {
   const [categories, setCategories] = useState<Categories>([])
@@ -124,7 +125,7 @@ const Analitics = () => {
           )}
         </Col>
         <Col span={8}>
-          {showGraphs && <ExportCSV fileName={filename} csvData={newData} />}
+          {showGraphs && <ExportCSV fileName={filename} csvData={demoData} />}
         </Col>
       </Row>
     </div>

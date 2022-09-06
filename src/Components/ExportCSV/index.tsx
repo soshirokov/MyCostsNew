@@ -22,7 +22,7 @@ export const ExportCSV = ({ csvData, fileName }: Props) => {
     const data = new Blob([excelBuffer], { type: fileType })
     FileSaver.saveAs(data, fileName + fileExtension)
   }
-  console.log(csvData)
+
   return (
     <Button
       type="primary"

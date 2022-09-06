@@ -7,7 +7,7 @@ import { PieChart } from '../../Components/PieChart'
 import { StatsLineChart } from '../../Components/StatsLineChart'
 import { DateRangePicker } from '../../DateRangePicker'
 import { auth, costByUserRef, userCategories } from '../../utils/firebase'
-import { Categories, CostsServer } from '../../utils/types'
+import { Categories, Costs, CostsServer } from '../../utils/types'
 import styles from './styles.module.scss'
 
 const Analitics = () => {
@@ -64,12 +64,12 @@ const Analitics = () => {
       const filteredCosts: CostsServer = {}
 
       Object.keys(costs).forEach((key) => {
-        const newDetails: { [key: string]: string } = {}
+        const newDetails: Costs = {}
 
         selectedCategories.forEach((category) => {
           newDetails[category] = costs[key].details[category]
             ? costs[key].details[category]
-            : ''
+            : 0
         })
 
         filteredCosts[key] = {

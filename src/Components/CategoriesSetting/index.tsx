@@ -1,17 +1,20 @@
-import { List, Typography } from 'antd'
+import { List, Select, Typography } from 'antd'
 import Button from 'antd/es/button'
 import Input from 'antd/lib/input/Input'
-import { onValue, set } from 'firebase/database'
+import { get, onValue, orderByChild, query, set } from 'firebase/database'
 import { useEffect, useState } from 'react'
-import { auth, userCategories } from '../../utils/firebase'
-import { Categories } from '../../utils/types'
+import { auth, costByUserRef, userCategories } from '../../utils/firebase'
+import { Categories, CostsServer } from '../../utils/types'
 import styles from './styles.module.scss'
 
 const { Title } = Typography
+const { Option } = Select
 
 export const CategoriesSetting = () => {
   const [categories, setCategories] = useState<Categories>([])
   const [newCategory, setNewCategory] = useState<string>()
+  const [categoryToDelete, setCategoryToDelete] = useState<string>()
+  const [categoryToMove, setCategoryToMove] = useState<string>()
 
   useEffect(() => {
     if (auth?.currentUser?.uid) {
@@ -29,12 +32,44 @@ export const CategoriesSetting = () => {
     }
   }
 
-  const deleteCategoryHandler = (removeCategory: string) => {
-    const newCategoriesList = categories.filter(
-      (category) => category !== removeCategory
-    )
-    if (auth?.currentUser?.uid) {
-      set(userCategories(auth?.currentUser?.uid), newCategoriesList)
+  const toDeleteCategoryHandler = (categoryToDelete: string) => {
+    setCategoryToDelete(categoryToDelete)
+  }
+
+  const toMoveToCategoryHandler = (categoryToMoveTo: string) => {
+    setCategoryToMove(categoryToMoveTo)
+  }
+
+  const filterCategories = () => {
+    return categories.filter((category) => category !== categoryToDelete)
+  }
+
+  const deleteCategoryHandler = () => {
+    if (auth?.currentUser?.uid && categoryToMove && categoryToDelete) {
+      const myQuery = query(
+        costByUserRef(auth.currentUser.uid),
+        orderByChild('dateTime')
+      )
+
+      get(myQuery).then((snapshot) => {
+        const currentCosts: CostsServer = snapshot.val()
+
+        Object.keys(currentCosts).forEach((key) => {
+          if (currentCosts[key].details[categoryToDelete]) {
+            const currentCategoryCost =
+              currentCosts[key].details[categoryToMove] || 0
+            currentCosts[key].details[categoryToMove] =
+              currentCategoryCost + +currentCosts[key].details[categoryToDelete]
+
+            delete currentCosts[key].details[categoryToDelete]
+          }
+        })
+
+        if (auth?.currentUser?.uid) {
+          set(costByUserRef(auth.currentUser.uid), currentCosts)
+          set(userCategories(auth.currentUser.uid), filterCategories())
+        }
+      })
     }
   }
 
@@ -54,12 +89,36 @@ export const CategoriesSetting = () => {
             <List.Item className={styles.CategorySetting__Item} key={category}>
               <div className={styles.CategorySetting__Label}>{category}</div>
               <div className={styles.CategorySetting__Controls}>
-                <Button
-                  type="link"
-                  onClick={() => deleteCategoryHandler(category)}
-                >
-                  remove
-                </Button>
+                {categoryToDelete !== category ? (
+                  <Button
+                    type="link"
+                    onClick={() => toDeleteCategoryHandler(category)}
+                  >
+                    remove
+                  </Button>
+                ) : (
+                  <>
+                    <Button
+                      type="primary"
+                      onClick={deleteCategoryHandler}
+                      disabled={!categoryToMove}
+                      style={{ marginRight: 20 }}
+                    >
+                      move costs here
+                    </Button>
+                    <Select
+                      value={categoryToMove}
+                      style={{ width: 180 }}
+                      onChange={toMoveToCategoryHandler}
+                    >
+                      {filterCategories().map((categoryToMove) => (
+                        <Option value={categoryToMove} key={categoryToMove}>
+                          {categoryToMove}
+                        </Option>
+                      ))}
+                    </Select>
+                  </>
+                )}
               </div>
             </List.Item>
           )}

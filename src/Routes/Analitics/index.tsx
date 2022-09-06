@@ -10,7 +10,10 @@ import { DateRangePicker } from '../../DateRangePicker'
 import { auth, costByUserRef, userCategories } from '../../utils/firebase'
 import { Categories, CostsServer } from '../../utils/types'
 import styles from './styles.module.scss'
-import { demoData } from '../../utils/demoData'
+
+type ExportCost = {
+  [key: string]: string
+}
 
 const Analitics = () => {
   const [categories, setCategories] = useState<Categories>([])
@@ -89,16 +92,27 @@ const Analitics = () => {
     },
     [selectedCategories]
   )
-  const val = [...Object.values(filteredCosts)]
-  const newData = [...Object.keys(filteredCosts), ...Object.values(val)]
+
   useEffect(() => {
     filterCosts(costs)
   }, [selectedCategories, costs, filterCosts])
 
-  console.log(filteredCosts)
-  console.log(Object.keys(filteredCosts))
-  console.log(Object.values(val))
-  console.log(newData)
+  const getCostsForExport = useCallback((): ExportCost[] => {
+    return Object.keys(filteredCosts).map((key) => {
+      const exportCost: ExportCost = {
+        date: key,
+        total: filteredCosts[key].total.toString(),
+      }
+
+      Object.keys(filteredCosts[key].details).forEach(
+        (category) =>
+          (exportCost[category] =
+            filteredCosts[key].details[category].toString())
+      )
+
+      return exportCost
+    })
+  }, [filteredCosts])
 
   return (
     <div className={styles.Analitics}>
@@ -125,7 +139,9 @@ const Analitics = () => {
           )}
         </Col>
         <Col span={8}>
-          {showGraphs && <ExportCSV fileName={filename} csvData={demoData} />}
+          {showGraphs && (
+            <ExportCSV fileName={filename} csvData={getCostsForExport()} />
+          )}
         </Col>
       </Row>
     </div>

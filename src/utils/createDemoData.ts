@@ -37,7 +37,7 @@ export const createDemoData = () => {
     demoCategories.forEach((category) => {
       const rand =
         Math.floor(Math.random() * 10) * Math.floor(Math.random() * 10) * 50
-      demoCost.details[category] = rand.toString()
+      demoCost.details[category] = rand
       demoCost.total = +demoCost.total + rand
     })
 

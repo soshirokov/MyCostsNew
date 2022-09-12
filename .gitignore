@@ -19,6 +19,9 @@
 .env.production.local
 .firebase
 
+#firebase-config
+/src/utils/firebase_config.ts
+
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*

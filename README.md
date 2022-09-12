@@ -16,7 +16,8 @@
 
 ### Запуск проекта
 
-```npm install
+```
+npm install
 npm start
 ```
 

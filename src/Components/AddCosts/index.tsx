@@ -47,7 +47,7 @@ export const AddCosts = () => {
 
     setCosts((prevState) => ({
       ...prevState,
-      [category]: e.target.value,
+      [category]: +e.target.value,
     }))
   }
 
@@ -84,7 +84,7 @@ export const AddCosts = () => {
 
       for (const prop in costsToSave) {
         if (!costsToSave[prop]) {
-          costsToSave[prop] = '0'
+          costsToSave[prop] = 0
         } else {
           info.total += +costsToSave[prop]
         }
@@ -102,7 +102,7 @@ export const AddCosts = () => {
       {categories.length > 0 &&
         categories.map((category) => (
           <Input
-            value={costs[category] !== '0' ? costs[category] : ''}
+            value={costs[category] !== 0 ? costs[category] : ''}
             defaultValue=""
             className={styles.AddCosts__Input}
             onChange={(e) => changeHandler(e, category)}

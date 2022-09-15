@@ -1,11 +1,11 @@
 export type Costs = {
-  [key: string]: string
+  [key: string]: number
 }
 
 export type CostServer = {
   dateTime: string
   details: {
-    [key: string]: string
+    [key: string]: number
   }
   total: string | number
 }

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Navigate, useParams } from 'react-router-dom'
 import { registerWithEmail, signInWithGoogle } from '../../utils/firebase'
-import { Button, Form, Input } from 'antd'
+import { Button, Form, Input, Col, Row } from 'antd'
 
 type Props = {
   authed: boolean
@@ -88,19 +88,21 @@ const RegistrationForm = ({ authed }: Props) => {
         >
           <Input.Password></Input.Password>
         </Form.Item>
-
-        <Form.Item wrapperCol={{ offset: 9, span: 7 }}>
-          <Button type="primary" htmlType="submit">
-            Sign Up
-          </Button>
-        </Form.Item>
-
-        <Form.Item wrapperCol={{ offset: 9, span: 7 }}>
-          <span style={{ marginRight: 20 }}>OR</span>
-          <Button type="primary" onClick={signInWithGoogle}>
-            Sign Up with Google
-          </Button>
-        </Form.Item>
+        <Row justify="center" align="middle">
+          <Col xs={{ flex: '1 0 95px' }} flex="100px">
+            <Button type="primary" htmlType="submit">
+              Sign In
+            </Button>
+          </Col>
+          <Col xs={{ flex: '1 0 50px' }} flex="0 1 40px">
+            OR
+          </Col>
+          <Col xs={{ flex: 'auto' }} flex="10px">
+            <Button type="primary" onClick={signInWithGoogle}>
+              Sign In with Google
+            </Button>
+          </Col>
+        </Row>
       </Form>
     </div>
   )

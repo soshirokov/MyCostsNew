@@ -4,11 +4,16 @@ import { Moment } from 'moment'
 import { useCallback, useEffect, useState } from 'react'
 import { CategoiesPicker } from '../../Components/CategoiesPicker'
 import { PieChart } from '../../Components/PieChart'
+import { ExportCSV } from '../../Components/ExportCSV'
 import { StatsLineChart } from '../../Components/StatsLineChart'
 import { DateRangePicker } from '../../DateRangePicker'
 import { auth, costByUserRef, userCategories } from '../../utils/firebase'
 import { Categories, Costs, CostsServer } from '../../utils/types'
 import styles from './styles.module.scss'
+
+type ExportCost = {
+  [key: string]: string
+}
 
 const Analitics = () => {
   const [categories, setCategories] = useState<Categories>([])
@@ -59,6 +64,7 @@ const Analitics = () => {
     setSelectedCategories(categories)
   }
 
+  const filename = 'for table'
   const filterCosts = useCallback(
     (costs: CostsServer) => {
       const filteredCosts: CostsServer = {}
@@ -91,6 +97,23 @@ const Analitics = () => {
     filterCosts(costs)
   }, [selectedCategories, costs, filterCosts])
 
+  const getCostsForExport = useCallback((): ExportCost[] => {
+    return Object.keys(filteredCosts).map((key) => {
+      const exportCost: ExportCost = {
+        date: key,
+        total: filteredCosts[key].total.toString(),
+      }
+
+      Object.keys(filteredCosts[key].details).forEach(
+        (category) =>
+          (exportCost[category] =
+            filteredCosts[key].details[category].toString())
+      )
+
+      return exportCost
+    })
+  }, [filteredCosts])
+
   return (
     <div className={styles.Analitics}>
       <Row>
@@ -113,6 +136,11 @@ const Analitics = () => {
         <Col span={8}>
           {showGraphs && (
             <PieChart categories={selectedCategories} costs={filteredCosts} />
+          )}
+        </Col>
+        <Col span={8}>
+          {showGraphs && (
+            <ExportCSV fileName={filename} csvData={getCostsForExport()} />
           )}
         </Col>
       </Row>

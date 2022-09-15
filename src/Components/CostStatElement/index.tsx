@@ -21,6 +21,7 @@ const CostStatElement = ({ sum, title, additionalSum, type, more }: Props) => {
         className={styles.CostStatElem}
         title={title}
         bordered={false}
+        style={{ width: 250, textAlign: 'center' }}
         headStyle={{ fontWeight: 'bold', fontSize: '14px' }}
       >
         <div className={styles.CostStatElem__Content}>

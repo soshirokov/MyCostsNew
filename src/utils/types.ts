@@ -15,3 +15,7 @@ export type CostsServer = {
 }
 
 export type Categories = Array<string>
+
+export type details = {
+  [key: string]: string
+}

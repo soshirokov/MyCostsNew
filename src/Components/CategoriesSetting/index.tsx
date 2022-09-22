@@ -1,6 +1,7 @@
 import { List, Select, Typography } from 'antd'
 import Button from 'antd/es/button'
 import Input from 'antd/lib/input/Input'
+import { CaretUpOutlined, CaretDownOutlined } from '@ant-design/icons'
 import { get, onValue, orderByChild, query, set } from 'firebase/database'
 import { useEffect, useState } from 'react'
 import { auth, costByUserRef, userCategories } from '../../utils/firebase'
@@ -30,6 +31,10 @@ export const CategoriesSetting = () => {
 
       setNewCategory('')
     }
+  }
+
+  const swap = (arr: Array<string>, a: number, b: number) => {
+    arr[a] = arr.splice(b, 1, arr[a])[0]
   }
 
   const toDeleteCategoryHandler = (categoryToDelete: string) => {
@@ -73,6 +78,24 @@ export const CategoriesSetting = () => {
     }
   }
 
+  const upCategoryHandler = (index: number) => {
+    const newCategoriesList = [...categories]
+    swap(newCategoriesList, index, index - 1)
+    saveNewCategoriesList(newCategoriesList)
+  }
+
+  const downCategoryHandler = (index: number) => {
+    const newCategoriesList = [...categories]
+    swap(newCategoriesList, index, index + 1)
+    saveNewCategoriesList(newCategoriesList)
+  }
+
+  const saveNewCategoriesList = (newList: string[]) => {
+    if (auth?.currentUser?.uid) {
+      set(userCategories(auth?.currentUser?.uid), newList)
+    }
+  }
+
   return (
     <>
       {categories.length > 0 && (
@@ -85,7 +108,7 @@ export const CategoriesSetting = () => {
           }
           bordered
           dataSource={categories}
-          renderItem={(category) => (
+          renderItem={(category, index) => (
             <List.Item className={styles.CategorySetting__Item} key={category}>
               <div className={styles.CategorySetting__Label}>{category}</div>
               <div className={styles.CategorySetting__Controls}>
@@ -119,6 +142,24 @@ export const CategoriesSetting = () => {
                     </Select>
                   </>
                 )}
+                <Button
+                  type="text"
+                  disabled={index === 0}
+                  onClick={() => {
+                    upCategoryHandler(index)
+                  }}
+                >
+                  <CaretUpOutlined />
+                </Button>
+                <Button
+                  type="text"
+                  disabled={index === categories.length - 1}
+                  onClick={() => {
+                    downCategoryHandler(index)
+                  }}
+                >
+                  <CaretDownOutlined />
+                </Button>
               </div>
             </List.Item>
           )}

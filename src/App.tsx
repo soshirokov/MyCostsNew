@@ -37,7 +37,6 @@ function App() {
         setOnAuth(false)
       }
     })
-
     return unsubscribe
   }, [])
 

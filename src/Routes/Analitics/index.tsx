@@ -116,8 +116,8 @@ const Analitics = () => {
 
   return (
     <div className={styles.Analitics}>
-      <Row>
-        <Col span={8}>
+      <Row gutter={[0, 20]}>
+        <Col xs={{ span: 24 }} md={{ span: 8 }}>
           <div className={styles.Analitics__Range}>
             <DateRangePicker onSelect={rangeSelectHandler} />
           </div>
@@ -129,18 +129,16 @@ const Analitics = () => {
               />
             </div>
           )}
-        </Col>
-        <Col span={8}>
-          {showGraphs && <StatsLineChart costs={filteredCosts} />}
-        </Col>
-        <Col span={8}>
-          {showGraphs && (
-            <PieChart categories={selectedCategories} costs={filteredCosts} />
-          )}
-        </Col>
-        <Col span={8}>
           {showGraphs && (
             <ExportCSV fileName={filename} csvData={getCostsForExport()} />
+          )}
+        </Col>
+        <Col xs={{ span: 24 }} md={{ span: 8 }}>
+          {showGraphs && <StatsLineChart costs={filteredCosts} />}
+        </Col>
+        <Col xs={{ span: 24 }} md={{ span: 8 }}>
+          {showGraphs && (
+            <PieChart categories={selectedCategories} costs={filteredCosts} />
           )}
         </Col>
       </Row>

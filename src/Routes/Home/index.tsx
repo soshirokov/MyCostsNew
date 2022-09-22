@@ -72,18 +72,18 @@ const Home = () => {
         <CostStats costs={costs} costLevel={costLevel} />
       )}
       <Title level={2}>Your today costs</Title>
-      <Row gutter={80}>
-        <Col span={6}>
+      <Row gutter={[{ xs: 0, md: 80 }, 40]}>
+        <Col xs={{ span: 24 }} md={{ span: 6 }}>
           <div className="Home__Calendar">
             <NewCalendar />
           </div>
         </Col>
-        <Col span={10}>
+        <Col xs={{ span: 24 }} md={{ span: 10 }}>
           <div className="Home__AddCosts">
             <AddCosts />
           </div>
         </Col>
-        <Col span={8}>
+        <Col xs={{ span: 24 }} md={{ span: 8 }}>
           <div className="Home__PieChart">
             {ShowCharts && <PieChart categories={categories} costs={costs} />}
           </div>

@@ -1,13 +1,23 @@
 .App {
   min-height: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
 
   &__Header {
     align-items: center;
     display: flex;
+
+    @media screen and (max-width: 480px) {
+      padding: 0 20px;
+    }
   }
 
   &__Content {
     padding: 40px 80px;
+
+    @media screen and (max-width: 480px) {
+      padding: 40px 20px;
+    }
   }
 
   &__Logout {

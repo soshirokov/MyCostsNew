@@ -50,11 +50,11 @@ const CostStats = ({ costs, costLevel }: Props) => {
 
   return (
     <div className={styles.CostStats}>
-      <Row gutter={20}>
-        <Col span={4}>
+      <Row gutter={[{ xs: 0, sm: 20 }, 8]}>
+        <Col xs={{ span: 24 }} md={{ span: 8 }} lg={{ span: 4 }}>
           <CostStatElement title="В этот день" sum={+dayCost} />
         </Col>
-        <Col span={4}>
+        <Col xs={{ span: 24 }} md={{ span: 8 }} lg={{ span: 4 }}>
           <CostStatElement
             title="В среднем за день"
             sum={+averageCosts}
@@ -71,10 +71,10 @@ const CostStats = ({ costs, costLevel }: Props) => {
             }
           />
         </Col>
-        <Col span={4}>
+        <Col xs={{ span: 24 }} md={{ span: 8 }} lg={{ span: 4 }}>
           <CostStatElement title="В этом месяце" sum={+monthCostTotal} />
         </Col>
-        <Col span={4}>
+        <Col xs={{ span: 24 }} md={{ span: 8 }} lg={{ span: 4 }}>
           <CostStatElement
             title="Будет за месяц"
             sum={+forecastCosts}
@@ -83,7 +83,7 @@ const CostStats = ({ costs, costLevel }: Props) => {
             type={+forecastCosts > costLevel ? 'negative' : 'positive'}
           />
         </Col>
-        <Col span={4}>
+        <Col xs={{ span: 24 }} md={{ span: 8 }} lg={{ span: 4 }}>
           <CostStatElement
             title="Осталось в день"
             sum={+balanceAverageCosts}
@@ -103,7 +103,7 @@ const CostStats = ({ costs, costLevel }: Props) => {
             }
           />
         </Col>
-        <Col span={4}>
+        <Col xs={{ span: 24 }} md={{ span: 8 }} lg={{ span: 4 }}>
           <CostStatElement
             title={`Осталось на ${
               getEndOfMonth(selectedDate).date() - maxDayInCosts.date()

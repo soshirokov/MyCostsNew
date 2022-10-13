@@ -6,10 +6,15 @@ import { CategoiesPicker } from '../../Components/CategoiesPicker'
 import { PieChart } from '../../Components/PieChart'
 import { ExportCSV } from '../../Components/ExportCSV'
 import { StatsLineChart } from '../../Components/StatsLineChart'
-import { DateRangePicker } from '../../DateRangePicker'
+import { DateRangePicker } from '../../Components/DateRangePicker'
 import { auth, costByUserRef, userCategories } from '../../utils/firebase'
 import { Categories, Costs, CostsServer } from '../../utils/types'
 import styles from './styles.module.scss'
+import { baseCurrency } from '../../utils/constants'
+import { convertAllToRate } from '../../utils/costConverters'
+import { useSelector } from 'react-redux'
+import { currentRate } from '../../Store/Rate/selectors'
+import { currentCurrency } from '../../Store/Currency/selectors'
 
 type ExportCost = {
   [key: string]: string
@@ -21,6 +26,8 @@ const Analitics = () => {
   const [range, setRange] = useState<[Moment, Moment]>()
   const [costs, setCosts] = useState<CostsServer>({})
   const [filteredCosts, setFilteredCosts] = useState<CostsServer>({})
+  const rate = useSelector(currentRate)
+  const currency = useSelector(currentCurrency)
 
   const showGraphs =
     range &&
@@ -42,9 +49,15 @@ const Analitics = () => {
         endAt(range[1].endOf('day').format('x'))
       )
 
-      onValue(myQuery, (snapshot) => setCosts(snapshot.val() || {}))
+      onValue(myQuery, (snapshot) => {
+        const displayCosts =
+          currency === baseCurrency
+            ? snapshot.val() || {}
+            : convertAllToRate(rate, snapshot.val())
+        setCosts(displayCosts)
+      })
     }
-  }, [range])
+  }, [range, currency, rate])
 
   useEffect(() => {
     if (auth?.currentUser?.uid) {

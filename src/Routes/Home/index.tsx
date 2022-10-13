@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Col, Row, Typography } from 'antd'
+import { Col, Row } from 'antd'
 import NewCalendar from '../../Components/Calendar'
 import { AddCosts } from '../../Components/AddCosts'
 import { PieChart } from '../../Components/PieChart'
@@ -17,11 +17,15 @@ import moment from 'moment'
 import { CostsServer } from '../../utils/types'
 import { CostStats } from '../../Components/CostStats'
 import { getEndOfMonth, getStartOfMonth } from '../../utils/helpers'
-
-const { Title } = Typography
+import { currentRate } from '../../Store/Rate/selectors'
+import { currentCurrency } from '../../Store/Currency/selectors'
+import { baseCurrency } from '../../utils/constants'
+import { convertAllToRate } from '../../utils/costConverters'
 
 const Home = () => {
   const selectedDate = useSelector(currentDateSelector)
+  const rate = useSelector(currentRate)
+  const currency = useSelector(currentCurrency)
 
   const [categories, setCategories] = useState<Array<string>>([])
   const [costs, setCosts] = useState<CostsServer>({})
@@ -31,11 +35,15 @@ const Home = () => {
 
   useEffect(() => {
     if (auth?.currentUser?.uid) {
-      onValue(costLevelRef(auth.currentUser.uid), (snapshot) =>
-        setCostLevel(snapshot.val() || 0)
-      )
+      onValue(costLevelRef(auth.currentUser.uid), (snapshot) => {
+        const costLevel =
+          currency === baseCurrency
+            ? snapshot.val() || 0
+            : Math.round(snapshot.val() * rate)
+        setCostLevel(costLevel)
+      })
     }
-  }, [])
+  }, [currency, rate])
 
   useEffect(() => {
     if (auth?.currentUser?.uid && selectedDate.isValid()) {
@@ -54,9 +62,15 @@ const Home = () => {
         endAt(lastDayOfStats.format('x'))
       )
 
-      onValue(myQuery, (snapshot) => setCosts(snapshot.val() || {}))
+      onValue(myQuery, (snapshot) => {
+        const displayCosts =
+          currency === baseCurrency
+            ? snapshot.val() || {}
+            : convertAllToRate(rate, snapshot.val())
+        setCosts(displayCosts)
+      })
     }
-  }, [selectedDate])
+  }, [selectedDate, currency, rate])
 
   useEffect(() => {
     if (auth?.currentUser?.uid) {
@@ -71,7 +85,6 @@ const Home = () => {
       {Object.keys(costs).length > 0 && (
         <CostStats costs={costs} costLevel={costLevel} />
       )}
-      <Title level={2}>Your today costs</Title>
       <Row gutter={[{ xs: 0, md: 80 }, 40]}>
         <Col xs={{ span: 24 }} md={{ span: 6 }}>
           <div className="Home__Calendar">

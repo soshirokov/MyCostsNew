@@ -1,5 +1,8 @@
 import React from 'react'
 import Chart from 'react-apexcharts'
+import { useSelector } from 'react-redux'
+import { currentCurrency } from '../../Store/Currency/selectors'
+import { currencyDisplay } from '../../utils/costConverters'
 import { CostsServer } from '../../utils/types'
 
 type Props = {
@@ -9,6 +12,8 @@ type Props = {
 const StatsLineChart = ({ costs }: Props) => {
   const costsData = []
   const costsSeries = []
+
+  const currency = useSelector(currentCurrency)
 
   const costsKeysSorted = Object.keys(costs).sort((a, b) =>
     costs[a].dateTime > costs[b].dateTime ? 1 : -1
@@ -34,11 +39,7 @@ const StatsLineChart = ({ costs }: Props) => {
       },
       tooltip: {
         y: {
-          formatter: (val: Number) =>
-            (+val).toLocaleString('ru-RU', {
-              style: 'currency',
-              currency: 'RUB',
-            }),
+          formatter: (val: number) => currencyDisplay(+val, currency),
         },
       },
       colors: ['#4f5c69'],

@@ -1,5 +1,8 @@
 import React from 'react'
 import Chart from 'react-apexcharts'
+import { useSelector } from 'react-redux'
+import { currentCurrency } from '../../Store/Currency/selectors'
+import { currencyDisplay } from '../../utils/costConverters'
 import { CostsServer } from '../../utils/types'
 
 type Props = {
@@ -8,6 +11,8 @@ type Props = {
 }
 
 const PieChart = ({ costs, categories }: Props) => {
+  const currency = useSelector(currentCurrency)
+
   const sortedCosts = categories
     .map((category) => {
       return {
@@ -66,11 +71,8 @@ const PieChart = ({ costs, categories }: Props) => {
               },
               value: {
                 fontSize: '18px',
-                formatter: function (val: String) {
-                  return (+val).toLocaleString('ru-RU', {
-                    style: 'currency',
-                    currency: 'RUB',
-                  })
+                formatter: function (val: string) {
+                  return currencyDisplay(+val, currency)
                 },
               },
               total: {
@@ -80,14 +82,13 @@ const PieChart = ({ costs, categories }: Props) => {
                 fontSize: '20px',
                 fontWeight: 900,
                 formatter: function (w: any) {
-                  return w.globals.seriesTotals
-                    .reduce((a: any, b: any) => {
+                  const total = w.globals.seriesTotals.reduce(
+                    (a: number, b: number) => {
                       return a + b
-                    }, 0)
-                    .toLocaleString('ru-RU', {
-                      style: 'currency',
-                      currency: 'RUB',
-                    })
+                    },
+                    0
+                  )
+                  return currencyDisplay(total, currency)
                 },
               },
             },

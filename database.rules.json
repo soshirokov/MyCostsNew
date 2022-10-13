@@ -1,17 +1,21 @@
 {
   "rules": {
-    "profiles": {
-      "$user_id": {
-        ".read": "auth != null",
-        ".write": "$user_id === auth.uid"
-      }
-    },
     "costs": {
       "$user_id": {
         ".indexOn": "dateTime",
         ".read": "auth != null",
         ".write": "$user_id === auth.uid"
       }
+    },
+    "profiles": {
+      "$user_id": {
+        ".read": "auth != null",
+        ".write": "$user_id === auth.uid"
+      }
+    },
+    "settings": {
+      ".read": "auth != null",
+      ".write": "auth != null"
     }
   }
 }

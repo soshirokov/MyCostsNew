@@ -3,6 +3,10 @@ import { onValue, set } from 'firebase/database'
 import { ChangeEvent, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { currentDateSelector } from '../../Store/Calendar/selectors'
+import { currentCurrency } from '../../Store/Currency/selectors'
+import { currentRate } from '../../Store/Rate/selectors'
+import { baseCurrency } from '../../utils/constants'
+import { convertFromRate, convertToRate } from '../../utils/costConverters'
 import { auth, costByDateRef, userCategories } from '../../utils/firebase'
 import { Categories, Costs, CostServer } from '../../utils/types'
 import styles from './styles.module.scss'
@@ -10,6 +14,8 @@ import styles from './styles.module.scss'
 // Используется только с календарем и авторизацией
 export const AddCosts = () => {
   const currentDate = useSelector(currentDateSelector)
+  const currency = useSelector(currentCurrency)
+  const rate = useSelector(currentRate)
   const [categories, setCategories] = useState<Categories>([])
   const [costs, setCosts] = useState<Costs>({})
 
@@ -23,15 +29,20 @@ export const AddCosts = () => {
         costByDateRef(auth.currentUser.uid, currentDate.format('DD-MM-YYYY')),
         (snapshot) => {
           const costsFromServer: CostServer = snapshot.val()
-          if (costsFromServer) {
-            setCosts(costsFromServer.details)
+          if (costsFromServer?.details) {
+            const displayCosts =
+              currency === baseCurrency
+                ? costsFromServer.details
+                : convertToRate(rate, costsFromServer.details)
+
+            setCosts(displayCosts)
           } else {
             setCosts({})
           }
         }
       )
     }
-  }, [currentDate])
+  }, [currentDate, currency, rate])
 
   const changeHandler = (
     e: ChangeEvent<HTMLInputElement>,
@@ -75,7 +86,10 @@ export const AddCosts = () => {
     }
   }
 
-  const saveCostsToFirebase = (costsToSave: Costs) => {
+  const saveCostsToFirebase = (inputCosts: Costs) => {
+    const costsToSave =
+      currency === baseCurrency ? inputCosts : convertFromRate(rate, inputCosts)
+
     if (auth?.currentUser?.uid) {
       const info = {
         total: 0,

@@ -1,6 +1,9 @@
 import { Card, Typography } from 'antd'
 import { CaretUpOutlined, CaretDownOutlined } from '@ant-design/icons'
 import styles from './styles.module.scss'
+import { useSelector } from 'react-redux'
+import { currentCurrency } from '../../Store/Currency/selectors'
+import { currencyDisplay } from '../../utils/costConverters'
 
 const { Text } = Typography
 
@@ -14,6 +17,7 @@ type Props = {
 
 const CostStatElement = ({ sum, title, additionalSum, type, more }: Props) => {
   const moreIcon = more ? <CaretUpOutlined /> : <CaretDownOutlined />
+  const currency = useSelector(currentCurrency)
 
   return (
     <>
@@ -25,10 +29,7 @@ const CostStatElement = ({ sum, title, additionalSum, type, more }: Props) => {
       >
         <div className={styles.CostStatElem__Content}>
           <Text className={styles.CostStatElem__Sum} strong>
-            {sum.toLocaleString('ru-RU', {
-              style: 'currency',
-              currency: 'RUB',
-            })}
+            {currencyDisplay(sum, currency)}
           </Text>
           {type ? (
             <Text
@@ -36,20 +37,12 @@ const CostStatElement = ({ sum, title, additionalSum, type, more }: Props) => {
               type={type === 'positive' ? 'success' : 'danger'}
             >
               {more !== undefined && moreIcon}
-              {additionalSum &&
-                additionalSum.toLocaleString('ru-RU', {
-                  style: 'currency',
-                  currency: 'RUB',
-                })}
+              {additionalSum && currencyDisplay(additionalSum, currency)}
             </Text>
           ) : (
             <Text className={styles.CostStatElem__AdditionalSum}>
               {more !== undefined && moreIcon}
-              {additionalSum &&
-                additionalSum.toLocaleString('ru-RU', {
-                  style: 'currency',
-                  currency: 'RUB',
-                })}
+              {additionalSum && currencyDisplay(additionalSum, currency)}
             </Text>
           )}
         </div>

@@ -27,6 +27,12 @@
     font-size: 20px;
     margin-right: 20px;
   }
+
+  &__CurrencySettings {
+    display: flex;
+    width: 100%;
+    justify-content: flex-end;
+  }
 }
 
 h2.App__SiteName {

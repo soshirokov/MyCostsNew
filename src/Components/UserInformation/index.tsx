@@ -4,17 +4,27 @@ import { Input } from 'antd'
 import styles from './styles.module.scss'
 import { auth, costLevelRef } from '../../utils/firebase'
 import { onValue, set } from 'firebase/database'
+import { useSelector } from 'react-redux'
+import { currentCurrency } from '../../Store/Currency/selectors'
+import { currentRate } from '../../Store/Rate/selectors'
+import { baseCurrency } from '../../utils/constants'
 
 export const UserInformation: React.FC = () => {
   const [costLevel, setCostLevel] = useState(0)
+  const currency = useSelector(currentCurrency)
+  const rate = useSelector(currentRate)
 
   useEffect(() => {
     if (auth?.currentUser?.uid) {
-      onValue(costLevelRef(auth.currentUser.uid), (snapshot) =>
-        setCostLevel(snapshot.val() || 0)
-      )
+      onValue(costLevelRef(auth.currentUser.uid), (snapshot) => {
+        const displayCostLevel =
+          currency === baseCurrency
+            ? snapshot.val() || 0
+            : Math.round(snapshot.val() * rate) || 0
+        setCostLevel(displayCostLevel)
+      })
     }
-  }, [])
+  }, [currency, rate])
 
   const costLevelChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setCostLevel(+e.target.value)
@@ -28,7 +38,11 @@ export const UserInformation: React.FC = () => {
 
   const blurHandler = (e: ChangeEvent<HTMLInputElement>) => {
     if (auth?.currentUser?.uid) {
-      set(costLevelRef(auth.currentUser.uid), e.target.value)
+      const newCostLevel =
+        currency === baseCurrency
+          ? +e.target.value
+          : Math.round(+e.target.value / rate)
+      set(costLevelRef(auth.currentUser.uid), newCostLevel)
     }
   }
 

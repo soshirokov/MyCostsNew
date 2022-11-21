@@ -4,7 +4,7 @@ export const convertToRate = (rate: number, costs: Costs) => {
   const newCosts = { ...costs }
 
   Object.keys(newCosts).forEach((key) => {
-    newCosts[key] = Math.round(newCosts[key] * rate)
+    newCosts[key] = Math.round(+newCosts[key] * rate)
   })
 
   return newCosts
@@ -14,7 +14,7 @@ export const convertFromRate = (rate: number, costs: Costs) => {
   const newCosts = { ...costs }
 
   Object.keys(newCosts).forEach((key) => {
-    newCosts[key] = Math.round(newCosts[key] / rate)
+    newCosts[key] = Math.round(+newCosts[key] / rate)
   })
 
   return newCosts
@@ -28,7 +28,7 @@ export const convertAllToRate = (rate: number, costs: CostsServer) => {
 
     Object.keys(newCosts[date].details).forEach((category) => {
       newCosts[date].details[category] = Math.round(
-        newCosts[date].details[category] * rate
+        +newCosts[date].details[category] * rate
       )
     })
   })

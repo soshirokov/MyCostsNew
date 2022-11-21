@@ -75,7 +75,7 @@ function App() {
             <MenuUnfoldOutlined className={styles.App__MenuIcon} />
           </Button>
           <Title level={2} className={styles.App__SiteName}>
-            MyCostsGB
+            MyCosts
           </Title>
           <div className={styles.App__CurrencySettings}>
             {!onAuth && <CurrencySetting />}

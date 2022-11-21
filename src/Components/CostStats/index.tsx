@@ -36,17 +36,12 @@ const CostStats = ({ costs, costLevel }: Props) => {
   const dayCost = costs[selectedDate.format('DD-MM-YYYY')]
     ? costs[selectedDate.format('DD-MM-YYYY')].total
     : 0
+  const daysToMonthEnd =
+    getEndOfMonth(selectedDate).date() - maxDayInCosts.date()
   const forecastCosts = averageCosts * getEndOfMonth(selectedDate).date()
   const balanceCostsTotal = costLevel - monthCostTotal
   const balanceAverageCosts =
-    getEndOfMonth(selectedDate).date() - maxDayInCosts.date() > 0
-      ? balanceCostsTotal /
-        (getEndOfMonth(selectedDate).date() - maxDayInCosts.date())
-      : 0
-  const balanceCostLevel =
-    getEndOfMonth(selectedDate).date() - maxDayInCosts.date() > 0
-      ? costLevel / (getEndOfMonth(selectedDate).date() - maxDayInCosts.date())
-      : 0
+    daysToMonthEnd > 0 ? balanceCostsTotal / daysToMonthEnd : 0
 
   return (
     <div className={styles.CostStats}>
@@ -105,15 +100,8 @@ const CostStats = ({ costs, costLevel }: Props) => {
         </Col>
         <Col xs={{ span: 24 }} md={{ span: 8 }} lg={{ span: 4 }}>
           <CostStatElement
-            title={`Осталось на ${
-              getEndOfMonth(selectedDate).date() - maxDayInCosts.date()
-            } дней`}
+            title={`Осталось на ${daysToMonthEnd} дней`}
             sum={+balanceCostsTotal}
-            additionalSum={+balanceCostsTotal - balanceCostLevel}
-            more={+balanceCostsTotal > balanceCostLevel}
-            type={
-              +balanceCostsTotal < balanceCostLevel ? 'negative' : 'positive'
-            }
           />
         </Col>
       </Row>

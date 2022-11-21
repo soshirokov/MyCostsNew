@@ -86,12 +86,12 @@ const Home = () => {
         <CostStats costs={costs} costLevel={costLevel} />
       )}
       <Row gutter={[{ xs: 0, md: 80 }, 40]}>
-        <Col xs={{ span: 24 }} md={{ span: 6 }}>
+        <Col xs={{ span: 24 }} md={{ span: 7 }}>
           <div className="Home__Calendar">
             <NewCalendar />
           </div>
         </Col>
-        <Col xs={{ span: 24 }} md={{ span: 10 }}>
+        <Col xs={{ span: 24 }} md={{ span: 9 }}>
           <div className="Home__AddCosts">
             <AddCosts />
           </div>

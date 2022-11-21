@@ -1,11 +1,11 @@
-import { Input } from 'antd'
+import { Input, message } from 'antd'
 import { onValue, set } from 'firebase/database'
 import { ChangeEvent, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { currentDateSelector } from '../../Store/Calendar/selectors'
 import { currentCurrency } from '../../Store/Currency/selectors'
 import { currentRate } from '../../Store/Rate/selectors'
-import { baseCurrency } from '../../utils/constants'
+import { baseCurrency, currencySymbol } from '../../utils/constants'
 import { convertFromRate, convertToRate } from '../../utils/costConverters'
 import { auth, costByDateRef, userCategories } from '../../utils/firebase'
 import { Categories, Costs, CostServer } from '../../utils/types'
@@ -14,7 +14,7 @@ import styles from './styles.module.scss'
 // Используется только с календарем и авторизацией
 export const AddCosts = () => {
   const currentDate = useSelector(currentDateSelector)
-  const currency = useSelector(currentCurrency)
+  const currency: string = useSelector(currentCurrency)
   const rate = useSelector(currentRate)
   const [categories, setCategories] = useState<Categories>([])
   const [costs, setCosts] = useState<Costs>({})
@@ -52,13 +52,13 @@ export const AddCosts = () => {
       .replace(/[^0-9+-]/g, '')
       .replace('++', '+')
       .replace('--', '-')
+
     if (+e.target.value === 0) {
       e.target.value = ''
     }
-
     setCosts((prevState) => ({
       ...prevState,
-      [category]: +e.target.value,
+      [category]: e.target.value,
     }))
   }
 
@@ -104,10 +104,15 @@ export const AddCosts = () => {
         }
       }
 
-      set(
-        costByDateRef(auth.currentUser.uid, currentDate.format('DD-MM-YYYY')),
-        { ...info, details: costsToSave }
-      )
+      try {
+        set(
+          costByDateRef(auth.currentUser.uid, currentDate.format('DD-MM-YYYY')),
+          { ...info, details: costsToSave }
+        )
+        message.success('Costs saved!')
+      } catch (e) {
+        message.error((e as Error).message)
+      }
     }
   }
 
@@ -124,6 +129,11 @@ export const AddCosts = () => {
             onKeyDown={keyDowHandler}
             key={category}
             suffix={<div className={styles.AddCosts__Label}>{category}</div>}
+            addonBefore={
+              <div className={styles.AddCosts__Label}>
+                {currencySymbol[currency]}
+              </div>
+            }
           />
         ))}
     </div>

@@ -64,7 +64,8 @@ export const CategoriesSetting = () => {
             const currentCategoryCost =
               currentCosts[key].details[categoryToMove] || 0
             currentCosts[key].details[categoryToMove] =
-              currentCategoryCost + +currentCosts[key].details[categoryToDelete]
+              +currentCategoryCost +
+              +currentCosts[key].details[categoryToDelete]
 
             delete currentCosts[key].details[categoryToDelete]
           }

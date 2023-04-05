@@ -1,7 +1,7 @@
-import moment from 'moment'
 import React from 'react'
 import Chart from 'react-apexcharts'
 import { useSelector } from 'react-redux'
+import { currentDateSelector } from '../../Store/Calendar/selectors'
 import { currentCurrency } from '../../Store/Currency/selectors'
 import { currencyDisplay } from '../../utils/costConverters'
 import { getEndOfMonth, getStartOfMonth } from '../../utils/helpers'
@@ -13,17 +13,17 @@ type Props = {
 }
 
 const AccumulationLineChart = ({ costs, costLevel }: Props) => {
-  const costsData = []
+  const selectedDate = useSelector(currentDateSelector)
 
   const currency = useSelector(currentCurrency)
 
   const costsKeysSorted = Object.keys(costs).sort((a, b) =>
     costs[a].dateTime > costs[b].dateTime ? 1 : -1
   )
-  costsData.push(...costsKeysSorted.map((key) => +costs[key].total))
+  const costsData = costsKeysSorted.map((key) => +costs[key].total)
 
-  const lastDayOfMonth = getEndOfMonth(moment()).date()
-  const firstDayOfMonth = getStartOfMonth(moment())
+  const lastDayOfMonth = getEndOfMonth(selectedDate).date()
+  const firstDayOfMonth = getStartOfMonth(selectedDate)
   const averageCost = costLevel / lastDayOfMonth
   const forecastCosts = new Array(lastDayOfMonth)
     .fill(0)

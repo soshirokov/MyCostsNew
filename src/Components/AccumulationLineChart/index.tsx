@@ -35,6 +35,12 @@ const AccumulationLineChart = ({ costs, costLevel }: Props) => {
         ? firstDayOfMonth.format('DD-MM-YYYY')
         : firstDayOfMonth.add(1, 'days').format('DD-MM-YYYY')
     )
+  const accumulationCostData: number[] = []
+  costsData.forEach((cost, index) =>
+    index === 0
+      ? accumulationCostData.push(cost)
+      : accumulationCostData.push(cost + accumulationCostData[index - 1])
+  )
 
   const settings = {
     options: {
@@ -62,7 +68,7 @@ const AccumulationLineChart = ({ costs, costLevel }: Props) => {
     series: [
       {
         name: 'Расходы',
-        data: costsData,
+        data: accumulationCostData,
       },
       {
         name: 'План',

@@ -21,6 +21,7 @@ import { currentRate } from '../../Store/Rate/selectors'
 import { currentCurrency } from '../../Store/Currency/selectors'
 import { baseCurrency } from '../../utils/constants'
 import { convertAllToRate } from '../../utils/costConverters'
+import { AccumulationLineChart } from '../../Components/AccumulationLineChart'
 
 const Home = () => {
   const selectedDate = useSelector(currentDateSelector)
@@ -102,6 +103,11 @@ const Home = () => {
           </div>
           <div className="Home__LineChart">
             {ShowCharts && <StatsLineChart costs={costs} />}
+          </div>
+          <div className="Home__LineChart">
+            {ShowCharts && (
+              <AccumulationLineChart costs={costs} costLevel={costLevel} />
+            )}
           </div>
         </Col>
       </Row>

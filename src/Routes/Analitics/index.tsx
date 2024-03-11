@@ -150,7 +150,9 @@ const Analitics = () => {
           )}
         </Col>
         <Col xs={{ span: 24 }} md={{ span: 8 }}>
-          {showGraphs && <StatsLineChart costs={filteredCosts} />}
+          {showGraphs && (
+            <StatsLineChart withTypeSwitcher costs={filteredCosts} />
+          )}
         </Col>
         <Col xs={{ span: 24 }} md={{ span: 8 }}>
           {showGraphs && (

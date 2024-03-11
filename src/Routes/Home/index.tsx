@@ -3,7 +3,6 @@ import { Col, Row } from 'antd'
 import NewCalendar from '../../Components/Calendar'
 import { AddCosts } from '../../Components/AddCosts'
 import { PieChart } from '../../Components/PieChart'
-import { StatsLineChart } from '../../Components/StatsLineChart'
 import {
   auth,
   costByUserRef,
@@ -100,9 +99,6 @@ const Home = () => {
         <Col xs={{ span: 24 }} md={{ span: 8 }}>
           <div className="Home__PieChart">
             {ShowCharts && <PieChart categories={categories} costs={costs} />}
-          </div>
-          <div className="Home__LineChart">
-            {ShowCharts && <StatsLineChart costs={costs} />}
           </div>
           <div className="Home__LineChart">
             {ShowCharts && (

@@ -1,4 +1,4 @@
-import { Col, Row } from 'antd'
+import { Button, Col, Row } from 'antd'
 import moment, { Moment } from 'moment'
 import { useSelector } from 'react-redux'
 import { currentDateSelector } from '../../Store/Calendar/selectors'
@@ -6,6 +6,8 @@ import { getEndOfMonth } from '../../utils/helpers'
 import { CostsServer } from '../../utils/types'
 import { CostStatElement } from '../CostStatElement'
 import styles from './styles.module.scss'
+import { useMediaQuery } from 'react-responsive'
+import { useState } from 'react'
 
 type Props = {
   costs: CostsServer
@@ -14,6 +16,8 @@ type Props = {
 
 const CostStats = ({ costs, costLevel }: Props) => {
   const selectedDate = useSelector(currentDateSelector)
+  const isMobile = useMediaQuery({ query: '(max-width: 767px)' })
+  const [isVisible, setIsVisible] = useState(!isMobile)
 
   const isCurrentMonth = (date: Moment) => {
     return date.month() === moment().month() && date.year() === moment().year()
@@ -47,76 +51,85 @@ const CostStats = ({ costs, costLevel }: Props) => {
 
   return (
     <div className={styles.CostStats}>
-      <Row gutter={[{ xs: 0, sm: 20 }, 8]}>
-        <Col xs={{ span: 24 }} md={{ span: 8 }} lg={{ span: 4 }}>
-          <CostStatElement title="В этот день" sum={+dayCost} />
-        </Col>
-        <Col xs={{ span: 24 }} md={{ span: 8 }} lg={{ span: 4 }}>
-          <CostStatElement
-            title="В среднем за день"
-            sum={+averageCosts}
-            additionalSum={
-              +averageCosts - costLevel / getEndOfMonth(selectedDate).date()
-            }
-            more={
-              +averageCosts > costLevel / getEndOfMonth(selectedDate).date()
-            }
-            type={
-              +averageCosts > costLevel / getEndOfMonth(selectedDate).date()
-                ? 'negative'
-                : 'positive'
-            }
-          />
-        </Col>
-        <Col xs={{ span: 24 }} md={{ span: 8 }} lg={{ span: 4 }}>
-          <CostStatElement
-            title="В этом месяце"
-            sum={+monthCostTotal}
-            additionalSum={monthCostTotal - forecastCurrentCosts}
-            more={monthCostTotal - forecastCurrentCosts > 0}
-            type={
-              monthCostTotal - forecastCurrentCosts > 0
-                ? 'negative'
-                : 'positive'
-            }
-          />
-        </Col>
-        <Col xs={{ span: 24 }} md={{ span: 8 }} lg={{ span: 4 }}>
-          <CostStatElement
-            title="Будет за месяц"
-            sum={+forecastCosts}
-            additionalSum={+forecastCosts - costLevel}
-            more={+forecastCosts > costLevel}
-            type={+forecastCosts > costLevel ? 'negative' : 'positive'}
-          />
-        </Col>
-        <Col xs={{ span: 24 }} md={{ span: 8 }} lg={{ span: 4 }}>
-          <CostStatElement
-            title="Осталось в день"
-            sum={+balanceAverageCosts}
-            additionalSum={
-              +balanceAverageCosts -
-              costLevel / getEndOfMonth(selectedDate).date()
-            }
-            more={
-              +balanceAverageCosts >
-              costLevel / getEndOfMonth(selectedDate).date()
-            }
-            type={
-              +balanceAverageCosts <
-              costLevel / getEndOfMonth(selectedDate).date()
-                ? 'negative'
-                : 'positive'
-            }
-          />
-        </Col>
-        <Col xs={{ span: 24 }} md={{ span: 8 }} lg={{ span: 4 }}>
-          <CostStatElement
-            title={`Осталось на ${daysToMonthEnd} дней`}
-            sum={+balanceCostsTotal}
-          />
-        </Col>
-      </Row>
+      {isMobile && (
+        <Button
+          block
+          className={isVisible && isMobile ? styles.hideButton : undefined}
+          onClick={() => setIsVisible((s) => !s)}
+        >{`${isVisible ? 'Скрыть' : 'Показать'} статистику`}</Button>
+      )}
+      {isVisible && (
+        <Row gutter={[{ xs: 0, sm: 20 }, 8]}>
+          <Col xs={{ span: 24 }} md={{ span: 8 }} lg={{ span: 4 }}>
+            <CostStatElement title="В этот день" sum={+dayCost} />
+          </Col>
+          <Col xs={{ span: 24 }} md={{ span: 8 }} lg={{ span: 4 }}>
+            <CostStatElement
+              title="В среднем за день"
+              sum={+averageCosts}
+              additionalSum={
+                +averageCosts - costLevel / getEndOfMonth(selectedDate).date()
+              }
+              more={
+                +averageCosts > costLevel / getEndOfMonth(selectedDate).date()
+              }
+              type={
+                +averageCosts > costLevel / getEndOfMonth(selectedDate).date()
+                  ? 'negative'
+                  : 'positive'
+              }
+            />
+          </Col>
+          <Col xs={{ span: 24 }} md={{ span: 8 }} lg={{ span: 4 }}>
+            <CostStatElement
+              title="В этом месяце"
+              sum={+monthCostTotal}
+              additionalSum={monthCostTotal - forecastCurrentCosts}
+              more={monthCostTotal - forecastCurrentCosts > 0}
+              type={
+                monthCostTotal - forecastCurrentCosts > 0
+                  ? 'negative'
+                  : 'positive'
+              }
+            />
+          </Col>
+          <Col xs={{ span: 24 }} md={{ span: 8 }} lg={{ span: 4 }}>
+            <CostStatElement
+              title="Будет за месяц"
+              sum={+forecastCosts}
+              additionalSum={+forecastCosts - costLevel}
+              more={+forecastCosts > costLevel}
+              type={+forecastCosts > costLevel ? 'negative' : 'positive'}
+            />
+          </Col>
+          <Col xs={{ span: 24 }} md={{ span: 8 }} lg={{ span: 4 }}>
+            <CostStatElement
+              title="Осталось в день"
+              sum={+balanceAverageCosts}
+              additionalSum={
+                +balanceAverageCosts -
+                costLevel / getEndOfMonth(selectedDate).date()
+              }
+              more={
+                +balanceAverageCosts >
+                costLevel / getEndOfMonth(selectedDate).date()
+              }
+              type={
+                +balanceAverageCosts <
+                costLevel / getEndOfMonth(selectedDate).date()
+                  ? 'negative'
+                  : 'positive'
+              }
+            />
+          </Col>
+          <Col xs={{ span: 24 }} md={{ span: 8 }} lg={{ span: 4 }}>
+            <CostStatElement
+              title={`Осталось на ${daysToMonthEnd} дней`}
+              sum={+balanceCostsTotal}
+            />
+          </Col>
+        </Row>
+      )}
     </div>
   )
 }

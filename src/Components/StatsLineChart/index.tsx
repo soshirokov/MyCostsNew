@@ -8,6 +8,7 @@ import { useState } from 'react'
 
 type Props = {
   costs: CostsServer
+  withTypeSwitcher?: boolean
 }
 
 type CostsTotal = {
@@ -17,7 +18,7 @@ type CostsTotal = {
   }
 }
 
-const StatsLineChart = ({ costs }: Props) => {
+const StatsLineChart = ({ costs, withTypeSwitcher }: Props) => {
   const [type, setType] = useState<'day' | 'month'>('day')
 
   const options = [
@@ -102,15 +103,17 @@ const StatsLineChart = ({ costs }: Props) => {
 
   return (
     <>
-      <Radio.Group
-        options={options}
-        onChange={(e) => {
-          setType(e.target.value)
-        }}
-        value={type}
-        optionType="button"
-        size="middle"
-      />
+      {withTypeSwitcher && (
+        <Radio.Group
+          options={options}
+          onChange={(e) => {
+            setType(e.target.value)
+          }}
+          value={type}
+          optionType="button"
+          size="middle"
+        />
+      )}
       <Chart
         type="area"
         width="100%"

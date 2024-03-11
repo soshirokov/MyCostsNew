@@ -1,24 +1,72 @@
-import React from 'react'
 import Chart from 'react-apexcharts'
 import { useSelector } from 'react-redux'
 import { currentCurrency } from '../../Store/Currency/selectors'
 import { currencyDisplay } from '../../utils/costConverters'
 import { CostsServer } from '../../utils/types'
+import { Radio } from 'antd'
+import { useState } from 'react'
 
 type Props = {
   costs: CostsServer
 }
 
+type CostsTotal = {
+  [key: string]: {
+    dateTime: string
+    total: number
+  }
+}
+
 const StatsLineChart = ({ costs }: Props) => {
+  const [type, setType] = useState<'day' | 'month'>('day')
+
+  const options = [
+    { label: 'По дням', value: 'day' },
+    { label: 'По месяцам', value: 'month' },
+  ]
+
   const costsData = []
   const costsSeries = []
 
   const currency = useSelector(currentCurrency)
 
-  const costsKeysSorted = Object.keys(costs).sort((a, b) =>
-    costs[a].dateTime > costs[b].dateTime ? 1 : -1
+  const clearedCosts: CostsTotal = Object.keys(costs).reduce(
+    (acc: CostsTotal, key) => ({
+      ...acc,
+      [key]: {
+        dateTime: costs[key].dateTime,
+        total: costs[key].total,
+      },
+    }),
+    {}
   )
-  costsData.push(...costsKeysSorted.map((key) => +costs[key].total))
+
+  const groupedCosts: CostsTotal =
+    type === 'day'
+      ? clearedCosts
+      : Object.keys(clearedCosts).reduce((acc: CostsTotal, key) => {
+          const monthKey = [key.split('-')[1], key.split('-')[2]].join('-')
+
+          return monthKey in acc
+            ? {
+                ...acc,
+                [monthKey]: {
+                  ...acc[monthKey],
+                  total: acc[monthKey].total + clearedCosts[key].total,
+                },
+              }
+            : {
+                ...acc,
+                [monthKey]: {
+                  ...clearedCosts[key],
+                },
+              }
+        }, {})
+
+  const costsKeysSorted = Object.keys(groupedCosts).sort((a, b) =>
+    groupedCosts[a].dateTime > groupedCosts[b].dateTime ? 1 : -1
+  )
+  costsData.push(...costsKeysSorted.map((key) => +groupedCosts[key].total))
   costsSeries.push(...costsKeysSorted)
 
   const settings = {
@@ -54,6 +102,15 @@ const StatsLineChart = ({ costs }: Props) => {
 
   return (
     <>
+      <Radio.Group
+        options={options}
+        onChange={(e) => {
+          setType(e.target.value)
+        }}
+        value={type}
+        optionType="button"
+        size="middle"
+      />
       <Chart
         type="area"
         width="100%"

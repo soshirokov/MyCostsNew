@@ -45,8 +45,6 @@ const CostStats = ({ costs, costLevel }: Props) => {
   const balanceAverageCosts =
     daysToMonthEnd > 0 ? balanceCostsTotal / daysToMonthEnd : 0
 
-  console.log(forecastCurrentCosts)
-
   return (
     <div className={styles.CostStats}>
       <Row gutter={[{ xs: 0, sm: 20 }, 8]}>

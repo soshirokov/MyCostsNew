@@ -39,9 +39,13 @@ const CostStats = ({ costs, costLevel }: Props) => {
   const daysToMonthEnd =
     getEndOfMonth(selectedDate).date() - maxDayInCosts.date()
   const forecastCosts = averageCosts * getEndOfMonth(selectedDate).date()
+  const forecastCurrentCosts =
+    (costLevel / getEndOfMonth(selectedDate).date()) * daysInCount
   const balanceCostsTotal = costLevel - monthCostTotal
   const balanceAverageCosts =
     daysToMonthEnd > 0 ? balanceCostsTotal / daysToMonthEnd : 0
+
+  console.log(forecastCurrentCosts)
 
   return (
     <div className={styles.CostStats}>
@@ -67,7 +71,17 @@ const CostStats = ({ costs, costLevel }: Props) => {
           />
         </Col>
         <Col xs={{ span: 24 }} md={{ span: 8 }} lg={{ span: 4 }}>
-          <CostStatElement title="В этом месяце" sum={+monthCostTotal} />
+          <CostStatElement
+            title="В этом месяце"
+            sum={+monthCostTotal}
+            additionalSum={monthCostTotal - forecastCurrentCosts}
+            more={monthCostTotal - forecastCurrentCosts > 0}
+            type={
+              monthCostTotal - forecastCurrentCosts > 0
+                ? 'negative'
+                : 'positive'
+            }
+          />
         </Col>
         <Col xs={{ span: 24 }} md={{ span: 8 }} lg={{ span: 4 }}>
           <CostStatElement

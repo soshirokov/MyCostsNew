@@ -54,11 +54,16 @@ const Home = () => {
     if (auth?.currentUser?.uid && selectedDate.isValid()) {
       const today = moment()
       const lastDayOfStats =
-        selectedDate.month() < today.month() &&
+        selectedDate.month() < today.month() ||
         selectedDate.year() <= today.year()
           ? getEndOfMonth(selectedDate)
           : today.endOf('day')
       const firstDayOfStats = getStartOfMonth(selectedDate)
+
+      console.log(
+        firstDayOfStats.toLocaleString(),
+        lastDayOfStats.toLocaleString()
+      )
 
       const myQuery = query(
         costByUserRef(auth.currentUser.uid),

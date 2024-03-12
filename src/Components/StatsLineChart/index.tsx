@@ -9,6 +9,7 @@ import { useState } from 'react'
 type Props = {
   costs: CostsServer
   withTypeSwitcher?: boolean
+  isVisible?: boolean
 }
 
 type CostsTotal = {
@@ -18,7 +19,11 @@ type CostsTotal = {
   }
 }
 
-const StatsLineChart = ({ costs, withTypeSwitcher }: Props) => {
+const StatsLineChart = ({
+  costs,
+  withTypeSwitcher,
+  isVisible = true,
+}: Props) => {
   const [type, setType] = useState<'day' | 'month'>('day')
 
   const options = [
@@ -99,6 +104,10 @@ const StatsLineChart = ({ costs, withTypeSwitcher }: Props) => {
         data: costsData,
       },
     ],
+  }
+
+  if (!isVisible) {
+    return null
   }
 
   return (

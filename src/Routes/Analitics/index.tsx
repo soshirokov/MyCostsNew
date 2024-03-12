@@ -142,6 +142,7 @@ const Analitics = () => {
               <CategoiesPicker
                 categories={categories}
                 onSelect={categoriesSelectHandler}
+                checkedCategories={selectedCategories}
               />
             </div>
           )}
@@ -150,9 +151,11 @@ const Analitics = () => {
           )}
         </Col>
         <Col xs={{ span: 24 }} md={{ span: 8 }}>
-          {showGraphs && (
-            <StatsLineChart withTypeSwitcher costs={filteredCosts} />
-          )}
+          <StatsLineChart
+            isVisible={showGraphs}
+            withTypeSwitcher
+            costs={filteredCosts}
+          />
         </Col>
         <Col xs={{ span: 24 }} md={{ span: 8 }}>
           {showGraphs && (

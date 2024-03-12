@@ -12,9 +12,10 @@ import { useState } from 'react'
 type Props = {
   costs: CostsServer
   costLevel: number
+  lastMonthCosts: number
 }
 
-const CostStats = ({ costs, costLevel }: Props) => {
+const CostStats = ({ costs, costLevel, lastMonthCosts }: Props) => {
   const selectedDate = useSelector(currentDateSelector)
   const isMobile = useMediaQuery({ query: '(max-width: 767px)' })
   const [isVisible, setIsVisible] = useState(!isMobile)
@@ -126,6 +127,9 @@ const CostStats = ({ costs, costLevel }: Props) => {
             <CostStatElement
               title={`Осталось на ${daysToMonthEnd} дней`}
               sum={+balanceCostsTotal}
+              additionalSum={costLevel - lastMonthCosts}
+              type={costLevel - lastMonthCosts > 0 ? 'positive' : 'negative'}
+              additionalDesc=" с прошлого мес."
             />
           </Col>
         </Row>

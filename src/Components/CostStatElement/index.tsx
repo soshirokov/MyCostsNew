@@ -13,9 +13,17 @@ type Props = {
   additionalSum?: number
   type?: 'positive' | 'negative'
   more?: boolean
+  additionalDesc?: string
 }
 
-const CostStatElement = ({ sum, title, additionalSum, type, more }: Props) => {
+const CostStatElement = ({
+  sum,
+  title,
+  additionalSum,
+  type,
+  more,
+  additionalDesc,
+}: Props) => {
   const moreIcon = more ? <CaretUpOutlined /> : <CaretDownOutlined />
   const currency = useSelector(currentCurrency)
 
@@ -39,11 +47,13 @@ const CostStatElement = ({ sum, title, additionalSum, type, more }: Props) => {
             >
               {more !== undefined && moreIcon}
               {additionalSum && currencyDisplay(additionalSum, currency)}
+              {additionalDesc}
             </Text>
           ) : (
             <Text className={styles.CostStatElem__AdditionalSum}>
-              {more !== undefined && moreIcon}
+              {!!more && moreIcon}
               {additionalSum && currencyDisplay(additionalSum, currency)}
+              {additionalDesc}
             </Text>
           )}
         </div>

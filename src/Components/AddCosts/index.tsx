@@ -11,7 +11,6 @@ import { auth, costByDateRef, userCategories } from '../../utils/firebase'
 import { Categories, Costs, CostServer } from '../../utils/types'
 import styles from './styles.module.scss'
 
-// Используется только с календарем и авторизацией
 export const AddCosts = () => {
   const currentDate = useSelector(currentDateSelector)
   const currency: string = useSelector(currentCurrency)
@@ -67,7 +66,7 @@ export const AddCosts = () => {
       ? e.target.value
       : e.target.value + '0'
 
-    // eslint-disable-next-line
+    // eslint-disable-next-line no-eval
     const toSave = e.target.value ? eval(e.target.value) : ''
 
     if (+e.target.value === 0) {

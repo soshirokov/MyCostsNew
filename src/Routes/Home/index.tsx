@@ -3,7 +3,6 @@ import { Col, Row } from 'antd'
 import NewCalendar from '../../Components/Calendar'
 import { AddCosts } from '../../Components/AddCosts'
 import { PieChart } from '../../Components/PieChart'
-import { StatsLineChart } from '../../Components/StatsLineChart'
 import {
   auth,
   costByUserRef,
@@ -22,6 +21,9 @@ import { currentCurrency } from '../../Store/Currency/selectors'
 import { baseCurrency } from '../../utils/constants'
 import { convertAllToRate } from '../../utils/costConverters'
 import { AccumulationLineChart } from '../../Components/AccumulationLineChart'
+import { loadLastMonthCosts, loadLastThreeMonthCosts } from '../../requests'
+import { CostStatElement } from '../../Components/CostStatElement'
+import styles from './styles.module.scss'
 
 const Home = () => {
   const selectedDate = useSelector(currentDateSelector)
@@ -31,6 +33,8 @@ const Home = () => {
   const [categories, setCategories] = useState<Array<string>>([])
   const [costs, setCosts] = useState<CostsServer>({})
   const [costLevel, setCostLevel] = useState(0)
+  const [lastMonthCosts, setLastMonthCosts] = useState(0)
+  const [lastThreeMonthCosts, setLastThreeMonthCosts] = useState(0)
 
   const ShowCharts = categories.length > 0 && Object.keys(costs).length > 0
 
@@ -81,34 +85,60 @@ const Home = () => {
     }
   }, [])
 
+  useEffect(() => {
+    async function getRecentCosts() {
+      const lastMonth = await loadLastMonthCosts({
+        userId: auth.currentUser?.uid ?? '',
+        currentDate: selectedDate,
+      })
+
+      const lastThreeMonth = await loadLastThreeMonthCosts({
+        userId: auth.currentUser?.uid ?? '',
+        currentDate: selectedDate,
+      })
+
+      setLastMonthCosts(lastMonth)
+      setLastThreeMonthCosts(lastThreeMonth)
+    }
+    if (auth?.currentUser?.uid) {
+      getRecentCosts()
+    }
+  }, [selectedDate])
+
   return (
     <div className="Home">
       {Object.keys(costs).length > 0 && (
-        <CostStats costs={costs} costLevel={costLevel} />
+        <CostStats
+          costs={costs}
+          costLevel={costLevel}
+          lastMonthCosts={lastMonthCosts}
+        />
       )}
       <Row gutter={[{ xs: 0, md: 80 }, 40]}>
         <Col xs={{ span: 24 }} md={{ span: 7 }}>
-          <div className="Home__Calendar">
+          <div className={styles.CalendarBlockWrapper}>
             <NewCalendar />
+            <CostStatElement
+              title="Расходы за последние 3 месяца"
+              sum={lastThreeMonthCosts}
+              additionalSum={lastThreeMonthCosts / 3 - costLevel}
+              additionalDesc=" (в среднем в месяц)"
+              type={
+                lastThreeMonthCosts / 3 - costLevel < 0
+                  ? 'positive'
+                  : 'negative'
+              }
+            />
           </div>
         </Col>
         <Col xs={{ span: 24 }} md={{ span: 9 }}>
-          <div className="Home__AddCosts">
-            <AddCosts />
-          </div>
+          <AddCosts />
         </Col>
         <Col xs={{ span: 24 }} md={{ span: 8 }}>
-          <div className="Home__PieChart">
-            {ShowCharts && <PieChart categories={categories} costs={costs} />}
-          </div>
-          <div className="Home__LineChart">
-            {ShowCharts && <StatsLineChart costs={costs} />}
-          </div>
-          <div className="Home__LineChart">
-            {ShowCharts && (
-              <AccumulationLineChart costs={costs} costLevel={costLevel} />
-            )}
-          </div>
+          {ShowCharts && <PieChart categories={categories} costs={costs} />}
+          {ShowCharts && (
+            <AccumulationLineChart costs={costs} costLevel={costLevel} />
+          )}
         </Col>
       </Row>
     </div>

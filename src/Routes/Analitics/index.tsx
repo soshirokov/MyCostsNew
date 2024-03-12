@@ -1,6 +1,6 @@
 import { Col, Row } from 'antd'
 import { endAt, onValue, orderByChild, query, startAt } from 'firebase/database'
-import { Moment } from 'moment'
+import moment, { Moment } from 'moment'
 import { useCallback, useEffect, useState } from 'react'
 import { CategoiesPicker } from '../../Components/CategoiesPicker'
 import { PieChart } from '../../Components/PieChart'
@@ -23,7 +23,10 @@ type ExportCost = {
 const Analitics = () => {
   const [categories, setCategories] = useState<Categories>([])
   const [selectedCategories, setSelectedCategories] = useState<Categories>([])
-  const [range, setRange] = useState<[Moment, Moment]>()
+  const [range, setRange] = useState<[Moment | null, Moment | null]>([
+    moment().subtract(3, 'month'),
+    moment(),
+  ])
   const [costs, setCosts] = useState<CostsServer>({})
   const [filteredCosts, setFilteredCosts] = useState<CostsServer>({})
   const rate = useSelector(currentRate)
@@ -31,16 +34,16 @@ const Analitics = () => {
 
   const showGraphs =
     range &&
-    range[0].isValid() &&
-    range[1].isValid() &&
+    range?.[0]?.isValid() &&
+    range?.[1]?.isValid() &&
     selectedCategories.length > 0
 
   useEffect(() => {
     if (
       auth?.currentUser?.uid &&
       range &&
-      range[0].isValid() &&
-      range[1].isValid()
+      range[0]?.isValid() &&
+      range[1]?.isValid()
     ) {
       const myQuery = query(
         costByUserRef(auth.currentUser.uid),
@@ -132,7 +135,7 @@ const Analitics = () => {
       <Row gutter={[0, 20]}>
         <Col xs={{ span: 24 }} md={{ span: 8 }}>
           <div className={styles.Analitics__Range}>
-            <DateRangePicker onSelect={rangeSelectHandler} />
+            <DateRangePicker value={range} onSelect={rangeSelectHandler} />
           </div>
           {categories.length > 0 && (
             <div className={styles.Analitics__Categories}>
@@ -147,7 +150,9 @@ const Analitics = () => {
           )}
         </Col>
         <Col xs={{ span: 24 }} md={{ span: 8 }}>
-          {showGraphs && <StatsLineChart costs={filteredCosts} />}
+          {showGraphs && (
+            <StatsLineChart withTypeSwitcher costs={filteredCosts} />
+          )}
         </Col>
         <Col xs={{ span: 24 }} md={{ span: 8 }}>
           {showGraphs && (

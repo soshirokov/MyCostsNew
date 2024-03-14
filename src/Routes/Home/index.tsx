@@ -94,12 +94,12 @@ const Home = () => {
     async function getRecentCosts() {
       const lastMonth = await loadLastMonthCosts({
         userId: auth.currentUser?.uid ?? '',
-        currentDate: selectedDate,
+        currentDate: moment(),
       })
 
       const lastThreeMonth = await loadLastThreeMonthCosts({
         userId: auth.currentUser?.uid ?? '',
-        currentDate: selectedDate,
+        currentDate: moment(),
       })
 
       setLastMonthCosts(lastMonth)
@@ -108,7 +108,7 @@ const Home = () => {
     if (auth?.currentUser?.uid) {
       getRecentCosts()
     }
-  }, [selectedDate])
+  }, [])
 
   return (
     <div className="Home">
@@ -122,7 +122,7 @@ const Home = () => {
       <Row gutter={[{ xs: 0, md: 80 }, 40]}>
         <Col xs={{ span: 24 }} md={{ span: 7 }}>
           <div className={styles.CalendarBlockWrapper}>
-            <NewCalendar />
+            <NewCalendar date={selectedDate} />
             <CostStatElement
               title="Расходы за последние 3 месяца"
               sum={lastThreeMonthCosts}

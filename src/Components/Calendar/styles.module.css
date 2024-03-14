@@ -1,0 +1,11 @@
+.calendarWrapper {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.datePicker {
+    flex: 1;
+    display: flex;
+    width: 100%;
+}

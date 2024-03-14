@@ -1,8 +1,13 @@
-import { DatePicker } from 'antd'
+import { DatePicker, DatePickerProps } from 'antd'
 import moment, { Moment } from 'moment'
 import { RangeValue } from 'rc-picker/lib/interface'
+import 'moment/locale/ru'
+import locale from 'antd/es/date-picker/locale/ru_RU'
 
 const { RangePicker } = DatePicker
+
+const customFormat: DatePickerProps['format'] = (value) =>
+  value.format('DD.MM.YYYY')
 
 type Props = {
   onSelect: (range: [Moment, Moment]) => void
@@ -22,7 +27,12 @@ const DateRangePicker = ({ value, onSelect }: Props) => {
 
   return (
     <>
-      <RangePicker value={value} onChange={changeHandler} />
+      <RangePicker
+        value={value}
+        onChange={changeHandler}
+        locale={locale}
+        format={customFormat}
+      />
     </>
   )
 }

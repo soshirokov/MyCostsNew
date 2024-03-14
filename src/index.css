@@ -30,3 +30,11 @@ code {
   background-color: #f0f2f5;
   min-height: 100%;
 }
+
+@media screen and (-webkit-min-device-pixel-ratio:0) { 
+  select,
+  textarea,
+  input {
+    font-size: 16px ! important;
+  }
+}

@@ -83,7 +83,11 @@ export const AddCosts = () => {
       e.target.value = ''
     }
 
-    const newCosts = { ...costs, [category]: toSave }
+    if (isNaN(toSave)) {
+      return
+    }
+
+    const newCosts = { ...costs, [category]: Math.ceil(toSave) }
 
     setCosts(newCosts)
     saveCostsToFirebase(newCosts)
@@ -155,6 +159,7 @@ export const AddCosts = () => {
                 {currencySymbol[currency]}
               </div>
             }
+            pattern="\d*"
           />
         ))}
       {currentInput && (

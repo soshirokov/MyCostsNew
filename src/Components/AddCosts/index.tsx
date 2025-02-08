@@ -74,7 +74,7 @@ export const AddCosts = () => {
   const blurHandler = (e: ChangeEvent<HTMLInputElement>, category: string) => {
     e.target.value = /[0-9]/g.test(e.target.value.slice(-1))
       ? e.target.value
-      : e.target.value + '0'
+      : e.target.value.slice(0, e.target.value.length - 1)
 
     // eslint-disable-next-line no-eval
     const toSave = e.target.value ? eval(e.target.value) : ''

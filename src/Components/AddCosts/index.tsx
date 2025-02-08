@@ -162,18 +162,21 @@ export const AddCosts = () => {
           <Button
             type="default"
             shape="circle"
+            size="large"
             icon={<PlusCircleOutlined />}
             onClick={() => addSignHandler('+')}
           />
           <Button
             type="default"
             shape="circle"
+            size="large"
             icon={<MinusCircleOutlined />}
             onClick={() => addSignHandler('-')}
           />
           <Button
             type="default"
             shape="circle"
+            size="large"
             icon={
               <MinusCircleOutlined
                 className={styles.divideIcon}
@@ -184,6 +187,7 @@ export const AddCosts = () => {
           <Button
             type="default"
             shape="circle"
+            size="large"
             icon={<CloseCircleOutlined />}
             onClick={() => addSignHandler('*')}
           />

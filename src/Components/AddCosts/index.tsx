@@ -1,4 +1,4 @@
-import { Input, message } from 'antd'
+import { Button, Input, message } from 'antd'
 import { onValue, set } from 'firebase/database'
 import { ChangeEvent, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
@@ -9,6 +9,11 @@ import { baseCurrency, currencySymbol } from '../../utils/constants'
 import { convertFromRate, convertToRate } from '../../utils/costConverters'
 import { auth, costByDateRef, userCategories } from '../../utils/firebase'
 import { Categories, Costs, CostServer } from '../../utils/types'
+import {
+  PlusCircleOutlined,
+  MinusCircleOutlined,
+  CloseCircleOutlined,
+} from '@ant-design/icons'
 import styles from './styles.module.scss'
 
 export const AddCosts = () => {
@@ -17,6 +22,9 @@ export const AddCosts = () => {
   const rate = useSelector(currentRate)
   const [categories, setCategories] = useState<Categories>([])
   const [costs, setCosts] = useState<Costs>({})
+  const [currentInput, setCurrentInput] = useState<HTMLInputElement | null>(
+    null
+  )
 
   useEffect(() => {
     if (auth?.currentUser?.uid) {
@@ -48,9 +56,11 @@ export const AddCosts = () => {
     category: string
   ) => {
     e.target.value = e.target.value
-      .replace(/[^0-9+-]/g, '')
+      .replace(/[^0-9+-/*]/g, '')
       .replace('++', '+')
       .replace('--', '-')
+      .replace('//', '/')
+      .replace('**', '*')
 
     if (+e.target.value === 0) {
       e.target.value = ''
@@ -77,11 +87,22 @@ export const AddCosts = () => {
 
     setCosts(newCosts)
     saveCostsToFirebase(newCosts)
+    setCurrentInput(null)
+  }
+
+  const focusHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    setCurrentInput(e.target)
   }
 
   const keyDowHandler = (e: any) => {
     if (e.keyCode === 13) {
       e.target.blur()
+    }
+  }
+
+  const addSignHandler = (sign: string) => {
+    if (currentInput) {
+      currentInput.value += sign
     }
   }
 
@@ -125,6 +146,7 @@ export const AddCosts = () => {
             className={styles.AddCosts__Input}
             onChange={(e) => changeHandler(e, category)}
             onBlur={(e) => blurHandler(e, category)}
+            onFocus={focusHandler}
             onKeyDown={keyDowHandler}
             key={category}
             suffix={<div className={styles.AddCosts__Label}>{category}</div>}
@@ -135,6 +157,38 @@ export const AddCosts = () => {
             }
           />
         ))}
+      {currentInput && (
+        <div className={styles.actions} onMouseDown={(e) => e.preventDefault()}>
+          <Button
+            type="default"
+            shape="circle"
+            icon={<PlusCircleOutlined />}
+            onClick={() => addSignHandler('+')}
+          />
+          <Button
+            type="default"
+            shape="circle"
+            icon={<MinusCircleOutlined />}
+            onClick={() => addSignHandler('-')}
+          />
+          <Button
+            type="default"
+            shape="circle"
+            icon={
+              <MinusCircleOutlined
+                className={styles.divideIcon}
+                onClick={() => addSignHandler('/')}
+              />
+            }
+          />
+          <Button
+            type="default"
+            shape="circle"
+            icon={<CloseCircleOutlined />}
+            onClick={() => addSignHandler('*')}
+          />
+        </div>
+      )}
     </div>
   )
 }

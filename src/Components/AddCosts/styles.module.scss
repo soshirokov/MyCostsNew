@@ -7,3 +7,19 @@
     font-weight: 600;
   }
 }
+
+.actions {
+  position: fixed;
+  z-index: 2;
+  width: 100%;
+  bottom: 0;
+  left: 0;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  background-color: #ffffff;
+}
+
+.divideIcon {
+  transform: rotate(135deg);
+}

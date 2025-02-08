@@ -13,6 +13,7 @@ import {
   PlusCircleOutlined,
   MinusCircleOutlined,
   CloseCircleOutlined,
+  EnterOutlined,
 } from '@ant-design/icons'
 import styles from './styles.module.scss'
 
@@ -195,6 +196,17 @@ export const AddCosts = () => {
             size="large"
             icon={<CloseCircleOutlined />}
             onClick={() => addSignHandler('*')}
+          />
+          <Button
+            type="default"
+            shape="circle"
+            size="large"
+            icon={<EnterOutlined />}
+            onClick={() => {
+              if (currentInput) {
+                currentInput.blur()
+              }
+            }}
           />
         </div>
       )}

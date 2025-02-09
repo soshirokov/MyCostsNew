@@ -1,0 +1,49 @@
+[debug] [2025-02-09T09:27:33.315Z] ----------------------------------------------------------------------
+[debug] [2025-02-09T09:27:33.316Z] Command:       /Users/soshirokov/.nvm/versions/node/v20.18.0/bin/node /Users/soshirokov/.nvm/versions/node/v20.18.0/bin/firebase deploy
+[debug] [2025-02-09T09:27:33.316Z] CLI Version:   13.30.0
+[debug] [2025-02-09T09:27:33.316Z] Platform:      darwin
+[debug] [2025-02-09T09:27:33.316Z] Node Version:  v20.18.0
+[debug] [2025-02-09T09:27:33.317Z] Time:          Sun Feb 09 2025 12:27:33 GMT+0300 (Moscow Standard Time)
+[debug] [2025-02-09T09:27:33.317Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2025-02-09T09:27:33.401Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-02-09T09:27:33.402Z] > authorizing via signed-in user (soshirokov@gmail.com)
+[debug] [2025-02-09T09:27:33.402Z] [iam] checking project mycostsnew for permissions ["firebase.projects.get","firebasedatabase.instances.update","firebasehosting.sites.update"]
+[debug] [2025-02-09T09:27:33.402Z] Checked if tokens are valid: true, expires at: 1739096292518
+[debug] [2025-02-09T09:27:33.402Z] Checked if tokens are valid: true, expires at: 1739096292518
+[debug] [2025-02-09T09:27:33.403Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/mycostsnew:testIamPermissions [none]
+[debug] [2025-02-09T09:27:33.403Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/mycostsnew:testIamPermissions x-goog-quota-user=projects/mycostsnew
+[debug] [2025-02-09T09:27:33.403Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/mycostsnew:testIamPermissions {"permissions":["firebase.projects.get","firebasedatabase.instances.update","firebasehosting.sites.update"]}
+[debug] [2025-02-09T09:27:34.206Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/mycostsnew:testIamPermissions 200
+[debug] [2025-02-09T09:27:34.206Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/mycostsnew:testIamPermissions {"permissions":["firebase.projects.get","firebasedatabase.instances.update","firebasehosting.sites.update"]}
+[debug] [2025-02-09T09:27:34.206Z] Checked if tokens are valid: true, expires at: 1739096292518
+[debug] [2025-02-09T09:27:34.206Z] Checked if tokens are valid: true, expires at: 1739096292518
+[debug] [2025-02-09T09:27:34.207Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/mycostsnew [none]
+[debug] [2025-02-09T09:27:34.571Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/mycostsnew 200
+[debug] [2025-02-09T09:27:34.571Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/mycostsnew {"projectId":"mycostsnew","projectNumber":"386275896182","displayName":"myCostsNew","name":"projects/mycostsnew","resources":{"hostingSite":"mycostsnew","realtimeDatabaseInstance":"mycostsnew-default-rtdb"},"state":"ACTIVE","etag":"1_ec88e6dd-2d68-4e9e-ab31-39263e9f229a"}
+[debug] [2025-02-09T09:27:34.572Z] Checked if tokens are valid: true, expires at: 1739096292518
+[debug] [2025-02-09T09:27:34.572Z] Checked if tokens are valid: true, expires at: 1739096292518
+[debug] [2025-02-09T09:27:34.572Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/mycostsnew [none]
+[debug] [2025-02-09T09:27:34.824Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/mycostsnew 200
+[debug] [2025-02-09T09:27:34.824Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/mycostsnew {"projectId":"mycostsnew","projectNumber":"386275896182","displayName":"myCostsNew","name":"projects/mycostsnew","resources":{"hostingSite":"mycostsnew","realtimeDatabaseInstance":"mycostsnew-default-rtdb"},"state":"ACTIVE","etag":"1_ec88e6dd-2d68-4e9e-ab31-39263e9f229a"}
+[info] 
+[info] === Deploying to 'mycostsnew'...
+[info] 
+[info] i  deploying database, hosting 
+[info] i  database: checking rules syntax... 
+[debug] [2025-02-09T09:27:34.828Z] Checked if tokens are valid: true, expires at: 1739096292518
+[debug] [2025-02-09T09:27:34.828Z] Checked if tokens are valid: true, expires at: 1739096292518
+[debug] [2025-02-09T09:27:34.828Z] >>> [apiv2][query] GET https://firebasedatabase.googleapis.com/v1beta/projects/mycostsnew/locations/-/instances/mycostsnew-default-rtdb [none]
+[debug] [2025-02-09T09:27:35.651Z] <<< [apiv2][status] GET https://firebasedatabase.googleapis.com/v1beta/projects/mycostsnew/locations/-/instances/mycostsnew-default-rtdb 200
+[debug] [2025-02-09T09:27:35.651Z] <<< [apiv2][body] GET https://firebasedatabase.googleapis.com/v1beta/projects/mycostsnew/locations/-/instances/mycostsnew-default-rtdb {"name":"projects/386275896182/locations/europe-west1/instances/mycostsnew-default-rtdb","project":"projects/386275896182","databaseUrl":"https://mycostsnew-default-rtdb.europe-west1.firebasedatabase.app","type":"DEFAULT_DATABASE","state":"ACTIVE"}
+[debug] [2025-02-09T09:27:35.652Z] Checked if tokens are valid: true, expires at: 1739096292518
+[debug] [2025-02-09T09:27:35.652Z] Checked if tokens are valid: true, expires at: 1739096292518
+[debug] [2025-02-09T09:27:35.652Z] >>> [apiv2][query] PUT https://mycostsnew-default-rtdb.europe-west1.firebasedatabase.app/.settings/rules.json dryRun=true
+[debug] [2025-02-09T09:27:35.653Z] >>> [apiv2][body] PUT https://mycostsnew-default-rtdb.europe-west1.firebasedatabase.app/.settings/rules.json "{\n  \"rules\": {\n    \"costs\": {\n      \"$user_id\": {\n        \".indexOn\": \"dateTime\",\n        \".read\": \"auth != null\",\n        \".write\": \"$user_id === auth.uid\"\n      }\n    },\n    \"profiles\": {\n      \"$user_id\": {\n        \".read\": \"auth != null\",\n        \".write\": \"$user_id === auth.uid\"\n      }\n    },\n    \"settings\": {\n      \".read\": \"auth != null\",\n      \".write\": \"auth != null\"\n    }\n  }\n}"
+[debug] [2025-02-09T09:27:35.853Z] <<< [apiv2][status] PUT https://mycostsnew-default-rtdb.europe-west1.firebasedatabase.app/.settings/rules.json 200
+[debug] [2025-02-09T09:27:35.854Z] <<< [apiv2][body] PUT https://mycostsnew-default-rtdb.europe-west1.firebasedatabase.app/.settings/rules.json {"status":"ok"}
+[info] ✔  database: rules syntax for database mycostsnew-default-rtdb is valid 
+[debug] [2025-02-09T09:27:35.856Z] Checked if tokens are valid: true, expires at: 1739096292518
+[debug] [2025-02-09T09:27:35.856Z] Checked if tokens are valid: true, expires at: 1739096292518
+[debug] [2025-02-09T09:27:35.856Z] >>> [apiv2][query] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/mycostsnew/versions [none]
+[debug] [2025-02-09T09:27:35.856Z] >>> [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/mycostsnew/versions {"status":"CREATED","labels":{"deployment-tool":"cli-firebase"}}

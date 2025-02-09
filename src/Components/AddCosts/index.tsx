@@ -17,6 +17,14 @@ import {
 } from '@ant-design/icons'
 import styles from './styles.module.scss'
 
+const clearValueExtraChars = (str: string) =>
+  str
+    .replace(/[^0-9+-/*]/g, '')
+    .replace('++', '+')
+    .replace('--', '-')
+    .replace('//', '/')
+    .replace('**', '*')
+
 export const AddCosts = () => {
   const currentDate = useSelector(currentDateSelector)
   const currency: string = useSelector(currentCurrency)
@@ -56,12 +64,7 @@ export const AddCosts = () => {
     e: ChangeEvent<HTMLInputElement>,
     category: string
   ) => {
-    e.target.value = e.target.value
-      .replace(/[^0-9+-/*]/g, '')
-      .replace('++', '+')
-      .replace('--', '-')
-      .replace('//', '/')
-      .replace('**', '*')
+    e.target.value = clearValueExtraChars(e.target.value)
 
     if (+e.target.value === 0) {
       e.target.value = ''
@@ -107,7 +110,7 @@ export const AddCosts = () => {
 
   const addSignHandler = (sign: string) => {
     if (currentInput) {
-      currentInput.value += sign
+      currentInput.value = clearValueExtraChars(currentInput.value + sign)
     }
   }
 
@@ -145,23 +148,25 @@ export const AddCosts = () => {
     <div className={styles.AddCosts}>
       {categories.length > 0 &&
         categories.map((category) => (
-          <Input
-            value={costs[category] !== 0 ? costs[category] : ''}
-            defaultValue=""
-            className={styles.AddCosts__Input}
-            onChange={(e) => changeHandler(e, category)}
-            onBlur={(e) => blurHandler(e, category)}
-            onFocus={focusHandler}
-            onKeyDown={keyDowHandler}
-            key={category}
-            suffix={<div className={styles.AddCosts__Label}>{category}</div>}
-            addonBefore={
-              <div className={styles.AddCosts__Label}>
-                {currencySymbol[currency]}
-              </div>
-            }
-            pattern="\d*"
-          />
+          <div className={styles.InputWrapper}>
+            <Input
+              value={costs[category] !== 0 ? costs[category] : ''}
+              defaultValue=""
+              className={styles.AddCosts__Input}
+              onChange={(e) => changeHandler(e, category)}
+              onBlur={(e) => blurHandler(e, category)}
+              onFocus={focusHandler}
+              onKeyDown={keyDowHandler}
+              key={category}
+              suffix={<div className={styles.AddCosts__Label}>{category}</div>}
+              addonBefore={
+                <div className={styles.AddCosts__Label}>
+                  {currencySymbol[currency]}
+                </div>
+              }
+              pattern="\d*"
+            />
+          </div>
         ))}
       {currentInput && (
         <div className={styles.actions} onMouseDown={(e) => e.preventDefault()}>

@@ -34,6 +34,7 @@ export const AddCosts = () => {
   const [currentInput, setCurrentInput] = useState<HTMLInputElement | null>(
     null
   )
+  const [currentCategory, setCurrentCategory] = useState('')
 
   useEffect(() => {
     if (auth?.currentUser?.uid) {
@@ -96,10 +97,12 @@ export const AddCosts = () => {
     setCosts(newCosts)
     saveCostsToFirebase(newCosts)
     setCurrentInput(null)
+    setCurrentCategory('')
   }
 
-  const focusHandler = (e: ChangeEvent<HTMLInputElement>) => {
+  const focusHandler = (e: ChangeEvent<HTMLInputElement>, category: string) => {
     setCurrentInput(e.target)
+    setCurrentCategory(category)
   }
 
   const keyDowHandler = (e: any) => {
@@ -155,7 +158,7 @@ export const AddCosts = () => {
               className={styles.AddCosts__Input}
               onChange={(e) => changeHandler(e, category)}
               onBlur={(e) => blurHandler(e, category)}
-              onFocus={focusHandler}
+              onFocus={(e) => focusHandler(e, category)}
               onKeyDown={keyDowHandler}
               key={category}
               suffix={<div className={styles.AddCosts__Label}>{category}</div>}
@@ -166,55 +169,58 @@ export const AddCosts = () => {
               }
               pattern="\d*"
             />
+            {currentInput && currentCategory === category && (
+              <div
+                className={styles.actions}
+                onMouseDown={(e) => e.preventDefault()}
+              >
+                <Button
+                  type="default"
+                  shape="circle"
+                  size="large"
+                  icon={<PlusCircleOutlined />}
+                  onClick={() => addSignHandler('+')}
+                />
+                <Button
+                  type="default"
+                  shape="circle"
+                  size="large"
+                  icon={<MinusCircleOutlined />}
+                  onClick={() => addSignHandler('-')}
+                />
+                <Button
+                  type="default"
+                  shape="circle"
+                  size="large"
+                  icon={
+                    <MinusCircleOutlined
+                      className={styles.divideIcon}
+                      onClick={() => addSignHandler('/')}
+                    />
+                  }
+                />
+                <Button
+                  type="default"
+                  shape="circle"
+                  size="large"
+                  icon={<CloseCircleOutlined />}
+                  onClick={() => addSignHandler('*')}
+                />
+                <Button
+                  type="default"
+                  shape="circle"
+                  size="large"
+                  icon={<EnterOutlined />}
+                  onClick={() => {
+                    if (currentInput) {
+                      currentInput.blur()
+                    }
+                  }}
+                />
+              </div>
+            )}
           </div>
         ))}
-      {currentInput && (
-        <div className={styles.actions} onMouseDown={(e) => e.preventDefault()}>
-          <Button
-            type="default"
-            shape="circle"
-            size="large"
-            icon={<PlusCircleOutlined />}
-            onClick={() => addSignHandler('+')}
-          />
-          <Button
-            type="default"
-            shape="circle"
-            size="large"
-            icon={<MinusCircleOutlined />}
-            onClick={() => addSignHandler('-')}
-          />
-          <Button
-            type="default"
-            shape="circle"
-            size="large"
-            icon={
-              <MinusCircleOutlined
-                className={styles.divideIcon}
-                onClick={() => addSignHandler('/')}
-              />
-            }
-          />
-          <Button
-            type="default"
-            shape="circle"
-            size="large"
-            icon={<CloseCircleOutlined />}
-            onClick={() => addSignHandler('*')}
-          />
-          <Button
-            type="default"
-            shape="circle"
-            size="large"
-            icon={<EnterOutlined />}
-            onClick={() => {
-              if (currentInput) {
-                currentInput.blur()
-              }
-            }}
-          />
-        </div>
-      )}
     </div>
   )
 }
